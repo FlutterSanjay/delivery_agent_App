@@ -1,0 +1,75 @@
+import 'package:get/get.dart';
+
+import '../modules/day_complete/bindings/day_complete_binding.dart';
+import '../modules/day_complete/views/day_complete_view.dart';
+import '../modules/delivery_agent_profile/bindings/delivery_agent_profile_binding.dart';
+import '../modules/delivery_agent_profile/views/delivery_agent_profile_view.dart';
+import '../modules/end_of_day/bindings/end_of_day_binding.dart';
+import '../modules/end_of_day/views/end_of_day_view.dart';
+import '../modules/home/bindings/home_binding.dart';
+import '../modules/home/views/home_view.dart';
+import '../modules/onboaeding/bindings/onboaeding_binding.dart';
+import '../modules/onboaeding/views/onboaeding_view.dart';
+import '../modules/order/bindings/order_binding.dart';
+import '../modules/order/views/order_view.dart';
+import '../modules/payment_page/bindings/payment_page_binding.dart';
+import '../modules/payment_page/views/payment_page_view.dart';
+import '../modules/record_sales/bindings/record_sales_binding.dart';
+import '../modules/record_sales/views/record_sales_view.dart';
+import '../modules/store_assign/bindings/store_assign_binding.dart';
+import '../modules/store_assign/views/store_assign_view.dart';
+import '../modules/store_list/bindings/store_list_binding.dart';
+import '../modules/store_list/views/store_list_view.dart';
+
+part 'app_routes.dart';
+
+class AppPages {
+  AppPages._();
+
+  static const INITIAL = Routes.DELIVERY_AGENT_PROFILE;
+
+  static final routes = [
+    GetPage(name: _Paths.HOME, page: () => const HomeView(), binding: HomeBinding()),
+    GetPage(
+      name: _Paths.ONBOAEDING,
+      page: () => const OnboardingView(),
+      binding: OnboardingBinding(),
+    ),
+    GetPage(
+      name: _Paths.STORE_LIST,
+      page: () => const StoreListView(),
+      binding: StoreListBinding(),
+    ),
+    GetPage(
+      name: _Paths.STORE_ASSIGN,
+      page: () => const StoreAssignView(),
+      binding: StoreAssignBinding(),
+    ),
+    GetPage(name: _Paths.ORDER, page: () => const OrderView(), binding: OrderBinding()),
+    GetPage(
+      name: _Paths.RECORD_SALES,
+      page: () => const RecordSalesView(),
+      binding: RecordSalesBinding(),
+    ),
+    GetPage(
+      name: _Paths.END_OF_DAY,
+      page: () => const EndOfDayView(),
+      binding: EndOfDayBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAY_COMPLETE,
+      page: () => const DayCompleteView(),
+      binding: DayCompleteBinding(),
+    ),
+    GetPage(
+      name: _Paths.PAYMENT_PAGE,
+      page: () => const PaymentPageView(),
+      binding: PaymentPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.DELIVERY_AGENT_PROFILE,
+      page: () => const DeliveryAgentProfileView(),
+      binding: DeliveryAgentProfileBinding(),
+    ),
+  ];
+}
