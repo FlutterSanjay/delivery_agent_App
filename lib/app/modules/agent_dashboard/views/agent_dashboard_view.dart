@@ -141,25 +141,25 @@ class AgentDashboardView extends GetView<AgentDashboardController> {
               icon: Icons.person_outline,
               label: 'View Profile',
               onTap: controller.goToProfile,
-              color: Colors.blue.shade700,
+              color: const Color(0xFF4C67FF), // Indigo Blue
             ),
             _buildActionButton(
               icon: Icons.add_circle_outline,
               label: 'New Delivery',
               onTap: controller.startNewDelivery,
-              color: Colors.teal.shade700,
+              color: const Color(0xFF00C896), // Soft Teal Green
             ),
             _buildActionButton(
               icon: Icons.history,
               label: 'Payment History',
               onTap: controller.viewPaymentHistory,
-              color: Colors.deepPurple.shade700,
+              color: const Color(0xFFFF6E40), // Vibrant Orange Coral
             ),
             _buildActionButton(
               icon: Icons.support_agent,
               label: 'Support',
               onTap: controller.goToSupport,
-              color: Colors.brown.shade700,
+              color: const Color(0xFF936DFF), // Soft Purple
             ),
           ],
         ),
@@ -301,9 +301,10 @@ class AgentDashboardView extends GetView<AgentDashboardController> {
             ),
             Obx(
               () => Switch(
+                trackOutlineColor: WidgetStateColor.transparent,
                 value: controller.isOnline.value,
                 onChanged: controller.toggleOnlineStatus,
-                activeColor: AppColor.greenColor,
+                activeColor: AppColor.lightGreenColor,
                 inactiveThumbColor: AppColor.redColor,
                 inactiveTrackColor: AppColor.redColor.withAlpha(50),
               ),
@@ -418,7 +419,9 @@ class AgentDashboardView extends GetView<AgentDashboardController> {
           children: [
             Icon(
               _getActivityIcon(activity.type ?? ""),
-              color: _getActivityColor(activity.status ?? ''),
+              color: activity.status == "complete"
+                  ? Color(0xff085b06)
+                  : _getActivityColor(activity.status ?? ""),
               size: 20.sp,
             ),
             SizedBox(width: 15.w),
@@ -491,7 +494,7 @@ class AgentDashboardView extends GetView<AgentDashboardController> {
       case 'processing':
         return Colors.blue.shade700;
       default:
-        return AppColor.greyColor;
+        return AppColor.redColor;
     }
   }
 }
