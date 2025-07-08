@@ -88,12 +88,12 @@ class DeliveryAgentProfileController extends GetxController {
 
   /// Populates text controllers with current profile data.
   void _populateControllers(DeliveryAgentProfile profile) {
-    nameController.text = profile.name;
-    phoneController.text = profile.phoneNumber;
-    emailController.text = profile.email;
-    vehicleTypeController.text = profile.vehicleType;
-    vehiclePlateNumberController.text = profile.vehiclePlateNumber;
-    addressController.text = profile.address;
+    nameController.text = profile.name!;
+    phoneController.text = profile.phoneNumber!;
+    emailController.text = profile.email!;
+    vehicleTypeController.text = profile.vehicleType!;
+    vehiclePlateNumberController.text = profile.vehiclePlateNumber!;
+    addressController.text = profile.address!;
   }
 
   /// Toggles between view and edit mode.

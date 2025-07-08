@@ -84,12 +84,12 @@ class DeliveryAgentProfileView extends GetView<DeliveryAgentProfileController> {
                       CircleAvatar(
                         radius: 60.r, // Use .r for radius
                         backgroundColor: Colors.grey.shade200,
-                        backgroundImage: AssetImage(profile.profilePictureUrl),
+                        backgroundImage: AssetImage(profile.profilePictureUrl!),
                         onBackgroundImageError: (exception, stackTrace) {
                           // Fallback to a placeholder icon if image fails to load
                           print('Error loading image: $exception');
                         },
-                        child: profile.profilePictureUrl.isEmpty
+                        child: profile.profilePictureUrl!.isEmpty
                             ? Icon(
                                 Icons.person,
                                 size: 60.sp,
@@ -144,11 +144,11 @@ class DeliveryAgentProfileView extends GetView<DeliveryAgentProfileController> {
                     vertical: 5.h,
                   ), // Use .w and .h
                   decoration: BoxDecoration(
-                    color: _getStatusColor(profile.status),
+                    color: _getStatusColor(profile.status!),
                     borderRadius: BorderRadius.circular(20.r), // Use .r
                   ),
                   child: Text(
-                    profile.status.capitalizeFirst!,
+                    profile.status!.capitalizeFirst!,
                     style: TextStyle(
                       color: AppColor.onPrimary,
                       fontSize: 14.sp,
@@ -328,7 +328,7 @@ class DeliveryAgentProfileView extends GetView<DeliveryAgentProfileController> {
                 _buildMetricItem(
                   icon: Icons.star_outline,
                   label: 'Rating',
-                  value: profile.rating.toStringAsFixed(1),
+                  value: profile.rating!.toStringAsFixed(1),
                 ),
                 _buildMetricItem(
                   icon: Icons.delivery_dining_outlined,

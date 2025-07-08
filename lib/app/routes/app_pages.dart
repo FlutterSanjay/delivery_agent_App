@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/agent_dashboard/bindings/agent_dashboard_binding.dart';
+import '../modules/agent_dashboard/views/agent_dashboard_view.dart';
 import '../modules/day_complete/bindings/day_complete_binding.dart';
 import '../modules/day_complete/views/day_complete_view.dart';
 import '../modules/delivery_agent_profile/bindings/delivery_agent_profile_binding.dart';
@@ -26,7 +28,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.DELIVERY_AGENT_PROFILE;
+  static const INITIAL = Routes.AGENT_DASHBOARD;
 
   static final routes = [
     GetPage(name: _Paths.HOME, page: () => const HomeView(), binding: HomeBinding()),
@@ -70,6 +72,11 @@ class AppPages {
       name: _Paths.DELIVERY_AGENT_PROFILE,
       page: () => const DeliveryAgentProfileView(),
       binding: DeliveryAgentProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.AGENT_DASHBOARD,
+      page: () => const AgentDashboardView(),
+      binding: AgentDashboardBinding(),
     ),
   ];
 }
