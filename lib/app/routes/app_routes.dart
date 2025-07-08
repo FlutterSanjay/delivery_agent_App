@@ -14,6 +14,7 @@ abstract class Routes {
   static const PAYMENT_PAGE = _Paths.PAYMENT_PAGE;
   static const DELIVERY_AGENT_PROFILE = _Paths.DELIVERY_AGENT_PROFILE;
   static const AGENT_DASHBOARD = _Paths.AGENT_DASHBOARD;
+  static const SIGN_UP_PAGE = _Paths.SIGN_UP_PAGE;
 }
 
 abstract class _Paths {
@@ -29,4 +30,5 @@ abstract class _Paths {
   static const PAYMENT_PAGE = '/payment-page';
   static const DELIVERY_AGENT_PROFILE = '/delivery-agent-profile';
   static const AGENT_DASHBOARD = '/agent-dashboard';
+  static const SIGN_UP_PAGE = '/sign-up-page';
 }

@@ -18,6 +18,8 @@ import '../modules/payment_page/bindings/payment_page_binding.dart';
 import '../modules/payment_page/views/payment_page_view.dart';
 import '../modules/record_sales/bindings/record_sales_binding.dart';
 import '../modules/record_sales/views/record_sales_view.dart';
+import '../modules/signUp_page/bindings/sign_up_page_binding.dart';
+import '../modules/signUp_page/views/sign_up_page_view.dart';
 import '../modules/store_assign/bindings/store_assign_binding.dart';
 import '../modules/store_assign/views/store_assign_view.dart';
 import '../modules/store_list/bindings/store_list_binding.dart';
@@ -28,7 +30,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.AGENT_DASHBOARD;
+  static const INITIAL = Routes.SIGN_UP_PAGE;
 
   static final routes = [
     GetPage(name: _Paths.HOME, page: () => const HomeView(), binding: HomeBinding()),
@@ -77,6 +79,11 @@ class AppPages {
       name: _Paths.AGENT_DASHBOARD,
       page: () => const AgentDashboardView(),
       binding: AgentDashboardBinding(),
+    ),
+    GetPage(
+      name: _Paths.SIGN_UP_PAGE,
+      page: () => const SignUpPageView(),
+      binding: SignUpPageBinding(),
     ),
   ];
 }

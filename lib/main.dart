@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'app/Services/record_sale_product_api.dart';
+import 'app/Services/sign_up_api_services.dart';
 import 'app/modules/day_complete/controllers/day_complete_controller.dart';
 import 'app/modules/onboaeding/controllers/onboaeding_controller.dart';
 import 'app/modules/record_sales/controllers/record_sales_controller.dart';
@@ -22,6 +23,7 @@ void main() {
   Get.put(EndOfDayController());
   Get.put(DayCompleteController());
   Get.put(PaymentPageController());
+  Get.put(AuthService());
 
   runApp(
     ScreenUtilInit(
