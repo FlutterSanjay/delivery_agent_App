@@ -1,10 +1,10 @@
 import 'package:delivery_agent/app/AppColor/appColor.dart';
-import 'package:delivery_agent/app/modules/onboaeding/views/onboaeding_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 
+import '../../login_process/views/onboaeding_view.dart';
 import '../controllers/end_of_day_controller.dart';
 
 class EndOfDayView extends GetView<EndOfDayController> {

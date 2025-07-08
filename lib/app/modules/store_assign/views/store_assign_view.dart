@@ -1,6 +1,5 @@
 import 'package:delivery_agent/app/AppColor/appColor.dart';
 import 'package:delivery_agent/app/imagePath/imagePath.dart';
-import 'package:delivery_agent/app/modules/onboaeding/views/onboaeding_view.dart';
 import 'package:delivery_agent/app/modules/order/views/order_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +7,7 @@ import 'package:get/get.dart';
 
 import '../../../Features/rich_text_feature.dart';
 import '../../../Features/tag_feature.dart';
+import '../../login_process/views/onboaeding_view.dart';
 import '../../record_sales/views/record_sales_view.dart';
 import '../../store_list/views/store_list_view.dart';
 import '../controllers/store_assign_controller.dart';

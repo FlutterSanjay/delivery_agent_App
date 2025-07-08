@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../AppColor/appColor.dart';
-import '../modules/onboaeding/views/onboaeding_view.dart';
+import '../modules/login_process/views/onboaeding_view.dart';
 
 class TagFeature extends StatelessWidget {
   final String txtName;

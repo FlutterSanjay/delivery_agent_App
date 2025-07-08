@@ -1,5 +1,4 @@
 import 'package:delivery_agent/app/imagePath/imagePath.dart';
-import 'package:delivery_agent/app/modules/onboaeding/controllers/onboaeding_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +6,7 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 
 import '../../../AppColor/appColor.dart';
+import '../controllers/onboaeding_controller.dart';
 
 class OnboardingView extends GetView<OnboardingController> {
   const OnboardingView({super.key});
@@ -201,7 +201,9 @@ class OnboardingView extends GetView<OnboardingController> {
           backgroundColor: AppColor.primary,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28.r)),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed('/store-list');
+        },
         child: CommonText(
           txtName: controller.showOtpFeild.value ? "Verify Phone Number" : "Login",
           txtColor: AppColor.onPrimary,

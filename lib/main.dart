@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'app/Services/record_sale_product_api.dart';
 import 'app/Services/sign_up_api_services.dart';
 import 'app/modules/day_complete/controllers/day_complete_controller.dart';
-import 'app/modules/onboaeding/controllers/onboaeding_controller.dart';
+import 'app/modules/login_process/controllers/onboaeding_controller.dart';
 import 'app/modules/record_sales/controllers/record_sales_controller.dart';
 import 'app/modules/store_list/controllers/store_list_controller.dart';
 import 'app/routes/app_pages.dart';

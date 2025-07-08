@@ -10,8 +10,11 @@ import '../modules/end_of_day/bindings/end_of_day_binding.dart';
 import '../modules/end_of_day/views/end_of_day_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
-import '../modules/onboaeding/bindings/onboaeding_binding.dart';
-import '../modules/onboaeding/views/onboaeding_view.dart';
+import '../modules/login_process/bindings/onboaeding_binding.dart';
+import '../modules/login_process/views/onboaeding_view.dart';
+import '../modules/onBoarding_page/bindings/on_boarding_page_binding.dart';
+import '../modules/onBoarding_page/views/on_boarding_page_view.dart';
+
 import '../modules/order/bindings/order_binding.dart';
 import '../modules/order/views/order_view.dart';
 import '../modules/payment_page/bindings/payment_page_binding.dart';
@@ -20,6 +23,8 @@ import '../modules/record_sales/bindings/record_sales_binding.dart';
 import '../modules/record_sales/views/record_sales_view.dart';
 import '../modules/signUp_page/bindings/sign_up_page_binding.dart';
 import '../modules/signUp_page/views/sign_up_page_view.dart';
+import '../modules/splash/bindings/splash_binding.dart';
+import '../modules/splash/views/splash_view.dart';
 import '../modules/store_assign/bindings/store_assign_binding.dart';
 import '../modules/store_assign/views/store_assign_view.dart';
 import '../modules/store_list/bindings/store_list_binding.dart';
@@ -30,10 +35,15 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SIGN_UP_PAGE;
+  static const INITIAL = Routes.SPLASH;
 
   static final routes = [
     GetPage(name: _Paths.HOME, page: () => const HomeView(), binding: HomeBinding()),
+    GetPage(
+      name: _Paths.SPLASH,
+      page: () => const SplashView(),
+      binding: SplashBinding(),
+    ),
     GetPage(
       name: _Paths.ONBOAEDING,
       page: () => const OnboardingView(),
@@ -84,6 +94,11 @@ class AppPages {
       name: _Paths.SIGN_UP_PAGE,
       page: () => const SignUpPageView(),
       binding: SignUpPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.ON_BOARDING_PAGE,
+      page: () => const OnBoardingPageView(),
+      binding: OnBoardingPageBinding(),
     ),
   ];
 }

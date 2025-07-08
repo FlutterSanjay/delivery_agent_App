@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../AppColor/appColor.dart';
 import '../../../data/model/product_model.dart';
-import '../../onboaeding/views/onboaeding_view.dart';
+
+import '../../login_process/views/onboaeding_view.dart';
 import '../controllers/order_controller.dart';
 // Import the Product model
 

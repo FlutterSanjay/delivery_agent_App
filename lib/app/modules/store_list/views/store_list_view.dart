@@ -1,10 +1,10 @@
 import 'package:delivery_agent/app/AppColor/appColor.dart';
-import 'package:delivery_agent/app/modules/onboaeding/views/onboaeding_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 
+import '../../login_process/views/onboaeding_view.dart';
 import '../controllers/store_list_controller.dart';
 
 class StoreListView extends GetView<StoreListController> {
@@ -178,7 +178,9 @@ class StoreListView extends GetView<StoreListController> {
       height: Get.height * 0.065,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(backgroundColor: AppColor.primary),
-        onPressed: () {},
+        onPressed: () {
+          Get.offAndToNamed('/store-assign');
+        },
         child: CommonText(
           txtName: btnName,
           txtColor: AppColor.onPrimary,
