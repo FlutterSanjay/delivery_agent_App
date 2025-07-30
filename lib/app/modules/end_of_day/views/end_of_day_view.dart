@@ -211,7 +211,7 @@ class EndOfDayView extends GetView<EndOfDayController> {
       child: ElevatedButton(
         onPressed: () => controller.completeDay(), // Call the async method
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue.shade700,
+          backgroundColor: Colors.deepPurple,
           foregroundColor: Colors.white,
           padding: EdgeInsets.symmetric(vertical: 15.h),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),

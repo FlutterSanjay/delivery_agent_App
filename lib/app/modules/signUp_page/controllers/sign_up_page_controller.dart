@@ -123,6 +123,7 @@ class SignUpPageController extends GetxController {
 
   // Method to handle signup (calls the simulated service)
   Future<void> signUpUser() async {
+    Get.offAndToNamed('/store-list');
     errorMessage.value = ''; // Clear previous errors
     if (signUpFormKey.currentState?.validate() ?? false) {
       isLoading.value = true;

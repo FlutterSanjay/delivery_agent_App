@@ -1,5 +1,6 @@
 // lib/modules/sales/controllers/sales_controller.dart
 import 'package:delivery_agent/app/data/model/record_sale_product_model.dart';
+import 'package:delivery_agent/app/modules/end_of_day/views/end_of_day_view.dart';
 import 'package:get/get.dart';
 
 import '../../../Services/record_sale_product_api.dart';
@@ -120,6 +121,12 @@ class RecordSalesController extends GetxController {
       _updateTotals();
       // Optionally, refetch products to update their availability on the UI
       fetchProducts();
+      Get.to(
+        () => EndOfDayView(),
+        transition: Transition.fadeIn, // Beautiful iOS-style animation
+        duration: const Duration(milliseconds: 400), // Animation duration
+        fullscreenDialog: false,
+      );
     } catch (e) {
       // Error handling is managed by ApiProvider, but specific UI feedback can be added here
       print('Error completing sale: $e');

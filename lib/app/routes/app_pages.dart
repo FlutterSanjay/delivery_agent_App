@@ -14,9 +14,10 @@ import '../modules/login_process/bindings/onboaeding_binding.dart';
 import '../modules/login_process/views/onboaeding_view.dart';
 import '../modules/onBoarding_page/bindings/on_boarding_page_binding.dart';
 import '../modules/onBoarding_page/views/on_boarding_page_view.dart';
-
 import '../modules/order/bindings/order_binding.dart';
 import '../modules/order/views/order_view.dart';
+import '../modules/page_not_found/bindings/page_not_found_binding.dart';
+import '../modules/page_not_found/views/page_not_found_view.dart';
 import '../modules/payment_page/bindings/payment_page_binding.dart';
 import '../modules/payment_page/views/payment_page_view.dart';
 import '../modules/record_sales/bindings/record_sales_binding.dart';
@@ -59,7 +60,7 @@ class AppPages {
       page: () => const StoreAssignView(),
       binding: StoreAssignBinding(),
     ),
-    GetPage(name: _Paths.ORDER, page: () => const OrderView(), binding: OrderBinding()),
+    GetPage(name: _Paths.ORDER, page: () => OrderView(), binding: OrderBinding()),
     GetPage(
       name: _Paths.RECORD_SALES,
       page: () => const RecordSalesView(),
@@ -99,6 +100,11 @@ class AppPages {
       name: _Paths.ON_BOARDING_PAGE,
       page: () => const OnBoardingPageView(),
       binding: OnBoardingPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.PAGE_NOT_FOUND,
+      page: () => const PageNotFoundView(),
+      binding: PageNotFoundBinding(),
     ),
   ];
 }

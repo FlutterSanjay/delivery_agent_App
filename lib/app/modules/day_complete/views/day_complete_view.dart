@@ -1,4 +1,5 @@
 import 'package:delivery_agent/app/AppColor/appColor.dart';
+import 'package:delivery_agent/app/modules/store_list/views/store_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -241,6 +242,12 @@ class _SummaryItem extends StatelessWidget {
                           "Click Here",
                           "Inventory in Van: Click Here clicked!",
                         );
+                        Get.offAll(
+                          () => StoreListView(),
+                          transition: Transition.fade,
+                          duration: Duration(milliseconds: 400),
+                          curve: Curves.easeIn,
+                        );
                       },
                       style: OutlinedButton.styleFrom(
                         elevation: 1,
@@ -249,7 +256,7 @@ class _SummaryItem extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(3.r),
                         ),
-                        backgroundColor: AppColor.primaryVariant,
+                        backgroundColor: AppColor.primaryVariant1,
                       ),
                       child: Text(
                         "Click Here",

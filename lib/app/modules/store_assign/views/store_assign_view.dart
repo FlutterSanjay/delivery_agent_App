@@ -1,5 +1,7 @@
 import 'package:delivery_agent/app/AppColor/appColor.dart';
 import 'package:delivery_agent/app/imagePath/imagePath.dart';
+import 'package:delivery_agent/app/modules/agent_dashboard/views/agent_dashboard_view.dart';
+import 'package:delivery_agent/app/modules/delivery_agent_profile/views/delivery_agent_profile_view.dart';
 import 'package:delivery_agent/app/modules/order/views/order_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,28 +27,66 @@ class StoreAssignView extends GetView<StoreAssignController> {
             controller.changePage(index);
             switch (index) {
               case 0:
-                Get.offAll(() => OrderView()); // Replace with your home view
+                Get.to(
+                  () => AgentDashboardView(),
+                  transition: Transition.fadeIn, // Beautiful iOS-style animation
+                  duration: const Duration(milliseconds: 400), // Animation duration
+                  fullscreenDialog: true,
+                  // Removes default back button
+                );
+                // Replace with your home view
                 break;
               case 1:
-                Get.offAll(() => RecordSalesView()); // Replace with your store list view
+                Get.to(
+                  () => StoreAssignView(),
+                  // Keep or disable swipe back gesture as needed
+                );
+                // Replace with your store list view
                 break;
-              //   case 2:
-              //     Get.offAll(() => AddStoreView()); // Replace with your add store view
-              //     break;
-              //   case 3:
-              //     Get.offAll(() => ExpenseProfileView()); // Replace with your expense view
-              //     break;
-              // }
+              case 2:
+                Get.to(
+                  () => OrderView(),
+                  transition: Transition.fadeIn, // Beautiful iOS-style animation
+                  duration: const Duration(milliseconds: 400), // Animation duration
+                  fullscreenDialog: true,
+                );
+
+                break;
+              case 3:
+                Get.offAll(
+                  () => RecordSalesView(),
+                  transition: Transition.fadeIn, // Beautiful iOS-style animation
+                  duration: const Duration(milliseconds: 400), // Animation duration
+                  fullscreenDialog: true,
+                );
+                // Replace with your expense view
+                break;
+
+              default:
+                Get.offAll('/page-not-found');
             }
           },
           type: BottomNavigationBarType.fixed,
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Store List'),
-            BottomNavigationBarItem(icon: Icon(Icons.add_business), label: 'Add Store'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+              activeIcon: Icon(Icons.home, color: AppColor.onSecondary),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.store),
+              label: 'Store List',
+              activeIcon: Icon(Icons.store, color: AppColor.onSecondary),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag),
+              label: 'Order',
+              activeIcon: Icon(Icons.shopping_bag, color: AppColor.onSecondary),
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.pie_chart),
               label: 'Expense Profile',
+              activeIcon: Icon(Icons.pie_chart, color: AppColor.onSecondary),
             ),
           ],
         ),
@@ -73,7 +113,7 @@ class StoreAssignView extends GetView<StoreAssignController> {
               width: Get.width * 0.75,
               height: 50.h,
               decoration: BoxDecoration(
-                color: AppColor.primaryVariant,
+                color: AppColor.primaryVariant1,
                 borderRadius: BorderRadius.circular(18.r),
               ),
               child: CommonText(
@@ -306,7 +346,7 @@ class StoreAssignView extends GetView<StoreAssignController> {
                                   width: Get.width * 0.28,
                                   height: 33.h,
                                   decoration: BoxDecoration(
-                                    color: AppColor.primaryVariant,
+                                    color: AppColor.primaryVariant1,
                                     borderRadius: BorderRadius.circular(18.r),
                                   ),
                                   child: Center(

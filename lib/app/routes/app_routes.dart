@@ -17,6 +17,7 @@ abstract class Routes {
   static const AGENT_DASHBOARD = _Paths.AGENT_DASHBOARD;
   static const SIGN_UP_PAGE = _Paths.SIGN_UP_PAGE;
   static const ON_BOARDING_PAGE = _Paths.ON_BOARDING_PAGE;
+  static const PAGE_NOT_FOUND = _Paths.PAGE_NOT_FOUND;
 }
 
 abstract class _Paths {
@@ -35,4 +36,5 @@ abstract class _Paths {
   static const AGENT_DASHBOARD = '/agent-dashboard';
   static const SIGN_UP_PAGE = '/sign-up-page';
   static const ON_BOARDING_PAGE = '/on-boarding-page';
+  static const PAGE_NOT_FOUND = '/page-not-found';
 }

@@ -1,6 +1,9 @@
+import 'package:delivery_agent/app/modules/agent_dashboard/controllers/agent_dashboard_controller.dart';
+import 'package:delivery_agent/app/modules/delivery_agent_profile/controllers/delivery_agent_profile_controller.dart';
 import 'package:delivery_agent/app/modules/end_of_day/controllers/end_of_day_controller.dart';
 import 'package:delivery_agent/app/modules/order/controllers/order_controller.dart';
 import 'package:delivery_agent/app/modules/payment_page/controllers/payment_page_controller.dart';
+import 'package:delivery_agent/app/modules/store_assign/controllers/store_assign_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,12 +21,15 @@ void main() {
   Get.put(ApiProvider());
   Get.put(RecordSalesController());
   Get.put(OrderController());
+  Get.put(StoreAssignController());
   Get.put(StoreListController());
   Get.put(OnboardingController());
   Get.put(EndOfDayController());
   Get.put(DayCompleteController());
   Get.put(PaymentPageController());
   Get.put(AuthService());
+  Get.put(AgentDashboardController());
+  Get.put(DeliveryAgentProfileController());
 
   runApp(
     ScreenUtilInit(

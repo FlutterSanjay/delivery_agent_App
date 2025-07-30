@@ -1,3 +1,4 @@
+import 'package:delivery_agent/app/modules/day_complete/views/day_complete_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -154,6 +155,12 @@ class EndOfDayController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Get.theme.snackBarTheme.backgroundColor,
         colorText: Get.theme.snackBarTheme.actionTextColor,
+      );
+      Get.offAll(
+        () => DayCompleteView(),
+        transition: Transition.leftToRight,
+        duration: const Duration(milliseconds: 400), // Animation duration
+        fullscreenDialog: false,
       );
       // Future: Navigate to another screen or clear data
     } catch (e) {

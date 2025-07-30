@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class AppColor {
   // Primary Colors
   static const Color primary = Color(0xFFF4783C);
-  static const Color primaryVariant = Color(0xFFF4783C);
+  static const Color primaryVariant1 = Color(0xFFF4783C);
+  static const Color primaryVariant2 = Color(0xFFFFBA00);
   static const Color secondary = Color(0xFF03DAC6);
   static const Color secondaryVariant = Color(0xFF018786);
   static const Color greenColor = Color(0xFF04FA24);
@@ -21,6 +22,14 @@ class AppColor {
   static const Color background = Color(0xFFFFFFFF);
   static const Color surface = Color(0xFFFFFFFF);
   static const Color error = Color(0xFFFF051A);
+
+  static const primaryDark = Color(0xFF388E3C);
+  static const primaryLight = Color(0xFFC8E6C9);
+  static const accent = Color(0xFF8BC34A);
+  static const grey = Color(0xFF9E9E9E);
+  static const greyLight = Color(0xFFEEEEEE);
+  static const white = Color(0xFFFFFFFF);
+  static const black = Color(0xFF000000);
 
   // On Colors (text/icons on top of other colors)
   static const Color onPrimary = Color(0xFFFFFFFF);

@@ -169,7 +169,9 @@ class OnboardingView extends GetView<OnboardingController> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 30.h),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Get.offAllNamed('/sign-up-page');
+                    },
                     child: RichText(
                       text: TextSpan(
                         text: "Don't have an account yet? ",
