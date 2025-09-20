@@ -1,43 +1,41 @@
 class SignUpRequest {
-  String username;
+  String name;
   String email;
   String phoneNumber;
-  String userType;
-  String password;
-  String confirmPassword;
+  String role;
+  String idProof;
+  String warehouseId;
 
   SignUpRequest({
-    required this.username,
+    required this.name,
     required this.email,
     required this.phoneNumber,
-    required this.userType,
-    required this.password,
-    required this.confirmPassword,
+    required this.role,
+    required this.idProof,
+    required this.warehouseId,
   });
 
-  // Convert to JSON for API call
+  /// Convert object to JSON for API
   Map<String, dynamic> toJson() {
     return {
-      'username': username,
+      'name': name,
       'email': email,
       'phoneNumber': phoneNumber,
-      'userType': userType,
-      'password': password,
-      'confirmPassword':
-          confirmPassword, // Often not sent to backend, but good for client-side validation
+      'role': role,
+      'idProof': idProof,
+      'warehouseId': warehouseId,
     };
   }
-}
 
-// You might also have a SignUpResponse model if your backend sends specific data back
-class SignUpResponse {
-  String message;
-  String? userId; // Optional
-  // ... other fields from your backend response
-
-  SignUpResponse({required this.message, this.userId});
-
-  factory SignUpResponse.fromJson(Map<String, dynamic> json) {
-    return SignUpResponse(message: json['message'], userId: json['userId']);
+  /// Create object from JSON (e.g., API response)
+  factory SignUpRequest.fromJson(Map<String, dynamic> json) {
+    return SignUpRequest(
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      phoneNumber: json['phoneNumber'] ?? '',
+      role: json['role'] ?? '',
+      idProof: json['idProof'] ?? '',
+      warehouseId: json['warehouseId'] ?? '',
+    );
   }
 }

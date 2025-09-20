@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "223407024914",
+    "project_id": "sales-yatra",
+    "storage_bucket": "sales-yatra.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223407024914:android:362947b8f91b4af14e21cb",
+        "android_client_info": {
+          "package_name": "com.deliveryAgent.delivery_agent"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbCWMpRONfBJdoO_UoauW0kB2r7Munq3s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

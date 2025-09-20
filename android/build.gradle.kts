@@ -1,3 +1,10 @@
+plugins {
+    // Agar tumhare paas koi aur plugins hain to wo yaha rahenge
+
+    // Add the Google services Gradle plugin (apply false here)
+    id("com.google.gms.google-services") version "4.4.3" apply false
+}
+
 allprojects {
     repositories {
         google()

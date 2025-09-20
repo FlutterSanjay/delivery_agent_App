@@ -18,6 +18,8 @@ abstract class Routes {
   static const SIGN_UP_PAGE = _Paths.SIGN_UP_PAGE;
   static const ON_BOARDING_PAGE = _Paths.ON_BOARDING_PAGE;
   static const PAGE_NOT_FOUND = _Paths.PAGE_NOT_FOUND;
+  static const MAP_INTERATION = _Paths.MAP_INTERATION;
+  static const DRAWER = _Paths.DRAWER;
 }
 
 abstract class _Paths {
@@ -37,4 +39,6 @@ abstract class _Paths {
   static const SIGN_UP_PAGE = '/sign-up-page';
   static const ON_BOARDING_PAGE = '/on-boarding-page';
   static const PAGE_NOT_FOUND = '/page-not-found';
+  static const MAP_INTERATION = '/map-interation';
+  static const DRAWER = '/drawer';
 }

@@ -12,6 +12,7 @@ enum PaymentMethod {
   other,
 }
 
+
 class PaymentPageController extends GetxController {
   //TODO: Implement PaymentPageController
   final PaymentApiService _apiService = PaymentApiService();
@@ -22,6 +23,13 @@ class PaymentPageController extends GetxController {
     paymentMethod: PaymentMethod.cash.name, // Default to cash
   ).obs;
 
+
+var selectedTab = "upi".obs;
+
+  void changeTab(String tab) {
+    selectedTab.value = tab;
+  }
+  
   // Rx variable for cash input field
   final TextEditingController cashInputController = TextEditingController();
   final RxDouble changeDue = 0.0.obs;

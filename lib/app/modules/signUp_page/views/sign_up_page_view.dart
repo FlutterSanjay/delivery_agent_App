@@ -1,3 +1,4 @@
+import 'package:delivery_agent/app/modules/signUp_page/views/warehouseDropdown.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,30 +34,30 @@ class SignUpPageView extends GetView<SignUpPageController> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildTextField(
-                  controller: controller.usernameController,
+                  controller: controller.username,
                   label: 'Username',
                   hint: 'Enter your username',
                   validator: controller.validateUsername,
-                  onChanged: (value) => controller.username.value = value,
+                  onChanged: (value) => controller.username.text = value,
                   isPasswordField: false,
                 ),
                 SizedBox(height: 16.0.h),
                 _buildTextField(
-                  controller: controller.emailController,
+                  controller: controller.email,
                   label: 'Email',
                   hint: 'Enter your email',
                   validator: controller.validateEmail,
-                  onChanged: (value) => controller.email.value = value,
+                  onChanged: (value) => controller.email.text = value,
                   keyboardType: TextInputType.emailAddress,
                   isPasswordField: false,
                 ),
                 SizedBox(height: 16.0.h),
                 _buildTextField(
-                  controller: controller.phoneController,
+                  controller: controller.phoneNumber,
                   label: 'Phone Number',
                   hint: 'Enter your phone number',
                   validator: controller.validatePhoneNumber,
-                  onChanged: (value) => controller.phoneNumber.value = value,
+                  onChanged: (value) => controller.phoneNumber.text = value,
                   keyboardType: TextInputType.phone,
                   isPasswordField: false,
                 ),
@@ -64,31 +65,33 @@ class SignUpPageView extends GetView<SignUpPageController> {
                 // User Type can be a DropdownButtonFormField or a segmented control
                 _buildTextField(
                   // For simplicity, using a text field. Consider DropdownButtonFormField.
-                  controller: controller.userTypeController,
-                  label: 'User Type',
-                  hint: 'e.g., Buyer, Seller',
-                  validator: controller.validateUserType,
-                  onChanged: (value) => controller.userType.value = value,
+                  controller: controller.idProof,
+                  label: 'Id Proof',
+                  hint: 'e.g.,Aadhaar Card',
+                  validator: controller.validateIdProof,
+                  onChanged: (value) => controller.idProof.text = value,
                   isPasswordField: false,
                 ),
                 SizedBox(height: 16.0.h),
-                _buildTextField(
-                  controller: controller.passwordController,
-                  label: 'Password',
-                  hint: 'Enter your password',
-                  validator: controller.validatePassword,
-                  onChanged: (value) => controller.password.value = value,
-                  isPasswordField: true,
-                ),
-                SizedBox(height: 16.0.h),
-                _buildTextField(
-                  controller: controller.confirmPasswordController,
-                  label: 'Confirm Password',
-                  hint: 'Re-enter your password',
-                  validator: controller.validateConfirmPassword,
-                  onChanged: (value) => controller.confirmPassword.value = value,
-                  isPasswordField: true,
-                ),
+                // _buildTextField(
+                //   controller: controller.password,
+                //   label: 'Password',
+                //   hint: 'Enter your password',
+                //   validator: controller.validatePassword,
+                //   onChanged: (value) => controller.password.text = value,
+                //   isPasswordField: true,
+                // ),
+                // SizedBox(height: 16.0.h),
+                // _buildTextField(
+                //   controller: controller.confirmPassword,
+                //   label: 'Confirm Password',
+                //   hint: 'Re-enter your password',
+                //   validator: controller.validateConfirmPassword,
+                //   onChanged: (value) => controller.confirmPassword.text = value,
+                //   isPasswordField: true,
+                // ),
+                // 🔥 Warehouse Dropdown Integrated
+                WarehouseDropdown(controller: controller),
                 SizedBox(height: 32.0.h),
                 Obx(
                   () => ElevatedButton(

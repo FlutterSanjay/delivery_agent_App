@@ -11,198 +11,290 @@ class PaymentPageView extends GetView<PaymentPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text('Complete Payment'),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
-        foregroundColor: Colors.black,
-      ),
-      extendBodyBehindAppBar: true,
-      body: Obx(() {
-        return SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(
-            20.0.w,
-            100.0.h,
-            20.0.w,
-            20.0.h,
-          ), // Adjust top padding
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Amount Due:',
-                style: TextStyle(fontSize: 18.sp, color: AppColor.onSecondary),
-              ),
-              SizedBox(height: 10.h),
-              // Display Amount Due
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  '\$${controller.transaction.value.amountDue.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontSize: 48.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueAccent,
-                  ),
-                ),
-              ),
-              SizedBox(height: 30.h),
-
-              // Payment Methods Card
-              _buildPaymentMethodsCard(),
-              SizedBox(height: 20.h),
-
-              // Conditional Cash Payment Input
-              if (controller.transaction.value.paymentMethod == PaymentMethod.cash.name)
-                _buildCashPaymentInput(),
-              SizedBox(height: 30.h),
-
-              // Error Message
-              if (controller.errorMessage.isNotEmpty)
-                Padding(
-                  padding: EdgeInsets.only(bottom: 15.0.h),
-                  child: Text(
-                    controller.errorMessage.value,
-                    style: TextStyle(color: AppColor.redColor, fontSize: 16.sp),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-
-              // Pay Button
-              _buildPayButton(),
-            ],
-          ),
-        );
-      }),
-    );
-  }
-
-  Widget _buildPaymentMethodsCard() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      child: Padding(
-        padding: EdgeInsets.all(16.0.r),
-        child: Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Select Payment Method',
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              "Secure Payment",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
-            SizedBox(height: 15.h),
-            Wrap(
-              spacing: 10.0.h, // gap between adjacent chips
-              runSpacing: 10.0.h, // gap between lines
-              children: PaymentMethod.values.map((method) {
-                return Obx(
-                  () => ChoiceChip(
-                    label: Text(method.name.capitalizeFirst!),
-                    selected: controller.transaction.value.paymentMethod == method.name,
-                    selectedColor: Colors.blue.shade100,
-                    onSelected: (selected) {
-                      if (selected) {
-                        controller.selectPaymentMethod(method);
-                      }
-                    },
-                    backgroundColor: Colors.grey.shade200,
-                    labelStyle: TextStyle(
-                      color: controller.transaction.value.paymentMethod == method.name
-                          ? Colors.blue.shade700
-                          : Colors.black87,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                      side: BorderSide(
-                        color: controller.transaction.value.paymentMethod == method.name
-                            ? Colors.blue.shade700
-                            : Colors.transparent,
-                        width: 1.5.w,
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
+            Text(
+              "Complete your payment safely and securely",
+              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
             ),
           ],
         ),
+        leading: CircleAvatar(
+          backgroundColor: Colors.orange.withOpacity(0.1),
+          child: Icon(Icons.shield, color: Colors.orange),
+        ),
       ),
-    );
-  }
-
-  Widget _buildCashPaymentInput() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      child: Padding(
-        padding: EdgeInsets.all(16.0.r),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Cash Payment Details',
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 15.h),
-            TextField(
-              controller: controller.cashInputController,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
-                labelText: 'Amount Paid (Cash)',
-                hintText: 'e.g., 50.00',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.r)),
-                prefixText: '\$',
+            /// ORDER SUMMARY CARD
+            Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 6,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Order Summary",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Product Name",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "Quantity: 1",
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        "\$199.99",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(height: 24),
+                  summaryRow("Subtotal", "\$199.99"),
+                  summaryRow("Tax", "\$10.00"),
+                  summaryRow("Delivery Charges", "\$5.00"),
+                  Divider(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Total",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        "\$214.99",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.orange,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 15.h),
+            SizedBox(height: 24),
+
+            /// TAB SWITCHER
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  'Change Due:',
-                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-                ),
-                Obx(
-                  () => Text(
-                    '\$${controller.changeDue.value.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: controller.changeDue.value >= 0 ? Colors.green : Colors.red,
-                    ),
-                  ),
-                ),
+                tabButton("UPI", "upi"),
+                tabButton("Credit/Debit Card", "card"),
               ],
             ),
+           
+            SizedBox(height: 20),
+
+            /// PAYMENT FORMS
+            Obx(() {
+              if (controller.selectedTab.value == "upi") {
+                return upiWidget();
+              } else {
+                return cardWidget();
+              }
+            }),
+          ],
+        ),
+      ),
+
+      /// BOTTOM PAY BUTTON
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.grey[50],
+          border: Border(top: BorderSide(color: Colors.grey[300]!)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                // handle payment confirm
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+                padding: EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: Text(
+                "Pay Now",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              "🔒 Your transaction is encrypted and secure",
+              style: TextStyle(fontSize: 11, color: Colors.grey),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildPayButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: controller.isLoading.value ? null : () => controller.processPayment(),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue.shade700,
-          foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 15.h),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-          elevation: 5,
-        ),
-        child: controller.isLoading.value
-            ? const CircularProgressIndicator(color: Colors.white)
-            : Text(
-                controller.transaction.value.paymentMethod == PaymentMethod.cash.name
-                    ? 'Complete Cash Payment'
-                    : 'Process ${controller.transaction.value.paymentMethod.capitalizeFirst!} Payment',
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-              ),
+  /// --- WIDGETS ---
+
+  Widget summaryRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [Text(label), Text(value)],
       ),
+    );
+  }
+
+  Widget tabButton(String title, String value) {
+    return GestureDetector(
+      onTap: () => controller.changeTab(value),
+      child: Obx(
+        () => Container(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: controller.selectedTab.value == value
+                    ? Colors.orange
+                    : Colors.transparent,
+                width: 2,
+              ),
+            ),
+          ),
+          child: Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: controller.selectedTab.value == value
+                  ? Colors.orange
+                  : Colors.grey,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget upiWidget() {
+    return Column(
+      children: [
+        TextField(
+          decoration: InputDecoration(
+            hintText: "Enter UPI ID",
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+        ),
+        SizedBox(height: 12),
+        ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.orange.withOpacity(0.2),
+            foregroundColor: Colors.orange,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          child: Text("Verify"),
+        ),
+      ],
+    );
+  }
+
+  Widget cardWidget() {
+    return Column(
+      children: [
+        TextField(
+          decoration: InputDecoration(
+            hintText: "Card Number",
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+        ),
+        SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "Expiry Date",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "CVV",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12),
+        TextField(
+          decoration: InputDecoration(
+            hintText: "Card Holder Name",
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+        ),
+      ],
     );
   }
 }

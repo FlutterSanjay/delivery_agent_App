@@ -6,12 +6,16 @@ import '../modules/day_complete/bindings/day_complete_binding.dart';
 import '../modules/day_complete/views/day_complete_view.dart';
 import '../modules/delivery_agent_profile/bindings/delivery_agent_profile_binding.dart';
 import '../modules/delivery_agent_profile/views/delivery_agent_profile_view.dart';
+import '../modules/drawer/bindings/drawer_binding.dart';
+import '../modules/drawer/views/drawer_view.dart';
 import '../modules/end_of_day/bindings/end_of_day_binding.dart';
 import '../modules/end_of_day/views/end_of_day_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login_process/bindings/onboaeding_binding.dart';
 import '../modules/login_process/views/onboaeding_view.dart';
+import '../modules/map_interation/bindings/map_interation_binding.dart';
+import '../modules/map_interation/views/map_interation_view.dart';
 import '../modules/onBoarding_page/bindings/on_boarding_page_binding.dart';
 import '../modules/onBoarding_page/views/on_boarding_page_view.dart';
 import '../modules/order/bindings/order_binding.dart';
@@ -39,7 +43,11 @@ class AppPages {
   static const INITIAL = Routes.SPLASH;
 
   static final routes = [
-    GetPage(name: _Paths.HOME, page: () => const HomeView(), binding: HomeBinding()),
+    GetPage(
+      name: _Paths.HOME,
+      page: () => const HomeView(),
+      binding: HomeBinding(),
+    ),
     GetPage(
       name: _Paths.SPLASH,
       page: () => const SplashView(),
@@ -57,10 +65,14 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.STORE_ASSIGN,
-      page: () => const StoreAssignView(),
+      page: () => StoreAssignView(),
       binding: StoreAssignBinding(),
     ),
-    GetPage(name: _Paths.ORDER, page: () => OrderView(), binding: OrderBinding()),
+    GetPage(
+      name: _Paths.ORDER,
+      page: () => OrderView(),
+      binding: OrderBinding(),
+    ),
     GetPage(
       name: _Paths.RECORD_SALES,
       page: () => const RecordSalesView(),
@@ -105,6 +117,16 @@ class AppPages {
       name: _Paths.PAGE_NOT_FOUND,
       page: () => const PageNotFoundView(),
       binding: PageNotFoundBinding(),
+    ),
+    GetPage(
+      name: _Paths.MAP_INTERATION,
+      page: () => const MapInterationView(),
+      binding: MapInterationBinding(),
+    ),
+    GetPage(
+      name: _Paths.DRAWER,
+      page: () => const DrawerBarView(),
+      binding: DrawerBarBinding(),
     ),
   ];
 }
