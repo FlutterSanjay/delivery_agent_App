@@ -10,6 +10,8 @@ import '../modules/drawer/bindings/drawer_binding.dart';
 import '../modules/drawer/views/drawer_view.dart';
 import '../modules/end_of_day/bindings/end_of_day_binding.dart';
 import '../modules/end_of_day/views/end_of_day_view.dart';
+import '../modules/helpSupport/bindings/help_support_binding.dart';
+import '../modules/helpSupport/views/help_support_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login_process/bindings/onboaeding_binding.dart';
@@ -127,6 +129,11 @@ class AppPages {
       name: _Paths.DRAWER,
       page: () => const DrawerBarView(),
       binding: DrawerBarBinding(),
+    ),
+    GetPage(
+      name: _Paths.HELP_SUPPORT,
+      page: () => const HelpSupportView(),
+      binding: HelpSupportBinding(),
     ),
   ];
 }

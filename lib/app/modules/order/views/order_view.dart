@@ -12,6 +12,12 @@ class OrderView extends GetView<OrderController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         title: const Text('My Inventory'),
         centerTitle: true,
         backgroundColor: AppColor.primaryVariant2,
@@ -45,20 +51,7 @@ class OrderView extends GetView<OrderController> {
           },
         );
       }),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Get.snackbar(
-            'Invoice Items',
-            'Items added: ${controller.invoiceItems.map((p) => p.name).join(', ')}',
-            snackPosition: SnackPosition.BOTTOM,
-            duration: const Duration(seconds: 3),
-          );
-        },
-        label: Obx(() => Text('View Invoice (${controller.invoiceItems.length})')),
-        icon: const Icon(Icons.shopping_cart),
-        backgroundColor: AppColor.primaryVariant1,
-        foregroundColor: Colors.white,
-      ),
+      
     );
   }
 }

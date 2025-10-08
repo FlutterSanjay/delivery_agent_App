@@ -16,6 +16,7 @@ class StoreAssignController extends GetxController {
   final LocationService locationService = LocationService();
   final LocationUploader locationUploader = LocationUploader();
   final OrderSummaryService orderSummaryService = OrderSummaryService();
+  RxString storeId = "".obs;
 
   // RxList<Map<String, dynamic>> allOrders =
   //     <Map<String, dynamic>>[].obs; // saare orders
@@ -197,13 +198,18 @@ class StoreAssignController extends GetxController {
 
   // Order Summary One Store Part
   var items = <Order>[].obs;
+  var productLength = 0.obs;
 
   /// Subtotal nikalo saare orders ke andar ke products ka
+  int productQuantity = 0;
   double get subtotal {
     double total = 0;
+
     for (var order in items) {
+      productQuantity = 0;
       for (var product in order.products ?? []) {
         total += (product.price ?? 0) * (product.quantity ?? 0);
+        productQuantity += int.parse("${product.quantity}");
       }
     }
     return total;
@@ -220,8 +226,12 @@ class StoreAssignController extends GetxController {
 
   /// API se ek order fetch karna aur list me dalna
   void fetchOrderItems(String orderId) async {
+    loading.value = true;
     final data = await orderSummaryService.getOrderItems(orderId);
-
+    print(data);
+    // print(data[0].products);
+    productLength.value = data[0].products!.length;
     items.assignAll(data); // ✅ ab Order list assign hoga
+    loading.value = false;
   }
 }

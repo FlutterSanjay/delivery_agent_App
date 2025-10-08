@@ -78,7 +78,7 @@ class StoreAssignView extends GetView<StoreAssignController> {
       backgroundColor: AppColor.lightGreyBackground,
       appBar: AppBar(
         backgroundColor: AppColor.onPrimary,
-        automaticallyImplyLeading: false, 
+        automaticallyImplyLeading: false,
         title: CommonText(
           txtName: "Store Assigned Today",
           txtColor: AppColor.onSecondary,
@@ -260,6 +260,7 @@ class StoreAssignView extends GetView<StoreAssignController> {
                           final store = controller.stores[index];
                           // final order = controller.getOrdersByStoreId(store['data']['storeId']);
                           final storeDetail = store['data'];
+
                           final storeLatitude =
                               storeDetail['location']?['latitude'] ?? 0.0;
                           final storeLongitude =
@@ -269,12 +270,18 @@ class StoreAssignView extends GetView<StoreAssignController> {
                           return GestureDetector(
                             onTap: () {
                               final orderItem = storeDetail['orderedItems'][0];
+                              print(storeDetail['email']);
+                              controller.storage.saveStoreEmail(
+                                storeDetail['email'],
+                              );
+                              controller.storage.saveOrderId(orderItem);
 
                               controller.fetchOrderItems(orderItem);
 
                               Get.to(
                                 () => OrderSummaryOneStore(
                                   controller: controller,
+                                  storeName: storeDetail['storeName'],
                                 ),
                               );
                             },

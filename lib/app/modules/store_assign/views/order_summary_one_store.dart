@@ -1,4 +1,5 @@
 import 'package:delivery_agent/app/AppColor/appColor.dart';
+import 'package:delivery_agent/app/Features/loader.dart';
 import 'package:delivery_agent/app/modules/payment_page/views/payment_page_view.dart';
 import 'package:delivery_agent/app/modules/store_assign/controllers/store_assign_controller.dart';
 import 'package:delivery_agent/app/routes/app_pages.dart';
@@ -9,7 +10,12 @@ import 'package:get/get.dart';
 
 class OrderSummaryOneStore extends StatelessWidget {
   final StoreAssignController controller;
-  const OrderSummaryOneStore({super.key, required this.controller});
+  final String storeName;
+  const OrderSummaryOneStore({
+    super.key,
+    required this.controller,
+    required this.storeName,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +35,19 @@ class OrderSummaryOneStore extends StatelessWidget {
         centerTitle: true,
       ),
       body: Obx(() {
-        return Column(
+        return controller.loading.value
+            ? AppLoader()
+            : Column(
           children: [
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.all(12.w),
-                itemCount: controller.items.length,
+                      itemCount: controller.productLength.value,
                 itemBuilder: (context, index) {
-                  final item = controller.items[index];
+                        final item = controller.items[0];
+                        final String? storeId = controller.items[0].orderId;
+                        controller.storeId.value = storeId!;
+                        controller.storage.saveStoreId(storeId ?? "Unkown Id");
                   final product = item.products![index];
                   print("Order Summary :${item.orderId}");
                   return Container(
@@ -129,7 +140,7 @@ class OrderSummaryOneStore extends StatelessWidget {
                                   vertical: 4.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: const Color.fromARGB(255, 9, 140, 233),
+                                        color: Colors.blue,
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(8.r),
                                     bottomLeft: Radius.circular(8.r),
@@ -146,47 +157,78 @@ class OrderSummaryOneStore extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Container(
-                                width: 60.w,
-                                height: 33.h, // yaha thoda bada rakho
-                                margin: EdgeInsets.only(top: 30.h),
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        item.paymentMethod == "cash_on_delivery"
-                                        ? Colors.red
-                                        : Colors.orange,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ), // chhota padding
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(3.r),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    //1. COD hoga tho Payment part Else Change the status
+                                    // Container(
+                                    //   width: 60.w,
+                                    //   height: 33.h, // yaha thoda bada rakho
+                                    //   margin: EdgeInsets.only(top: 30.h),
+                                    //   child: ElevatedButton(
+                                    //     style: ElevatedButton.styleFrom(
+                                    //       backgroundColor:
+                                    //           item.paymentMethod == "cash_on_delivery"
+                                    //           ? Colors.red
+                                    //           : Colors.orange,
+                                    //       padding: EdgeInsets.symmetric(
+                                    //         horizontal: 12,
+                                    //         vertical: 8,
+                                    //       ), // chhota padding
+                                    //       shape: RoundedRectangleBorder(
+                                    //         borderRadius: BorderRadius.circular(3.r),
+                                    //       ),
+                                    //     ),
+                                    //     onPressed: () {
+                                    //             if (item.paymentMethod ==
+                                    //                 "cash_on_delivery") {
+                                    //               final double productPrice =
+                                    //                   double.parse(
+                                    //                     product.price.toString(),
+                                    //                   );
+                                    //               final double productQuantity =
+                                    //                   double.parse(
+                                    //                     product.quantity.toString(),
+                                    //                   );
+                                    //               final double lineTotal =
+                                    //                   productPrice * productQuantity;
+                                    //               final double taxAmount =
+                                    //                   lineTotal * 0.1;
+                                    //               final double totalAmount =
+                                    //                   lineTotal + taxAmount;
+                                    //               //1. COD hoga tho Payment part Else Change the status
 
-                                    // item.paymentMethod == "cash_on_delivery"?:;
-                                    Get.to(
-                                      () => PaymentPageView(),
-                                      transition: Transition.rightToLeft,
-                                      duration: Duration(milliseconds: 400),
-                                      curve: Curves.easeInOut,
-                                    );
-                                  },
-                                  child: Text(
-                                    item.paymentMethod == "cash_on_delivery"
-                                        ? "Pay"
-                                        : "Done",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                                    //               // item.paymentMethod == "cash_on_delivery"?:;
+                                    //               Get.to(
+                                    //                 () => PaymentPageView(),
+                                    //                 arguments: {
+                                    //                   "subtotal": "$lineTotal",
+                                    //                   "tax": "$taxAmount",
+                                    //                   "total": "$totalAmount",
+                                    //                   "storeName": storeName,
+                                    //                   "storeId": storeId,
+                                    //                   "productQuantity":
+                                    //                       "${product.quantity}",
+                                    //                 },
+                                    //                 transition:
+                                    //                     Transition.rightToLeft,
+                                    //                 duration: Duration(
+                                    //                   milliseconds: 400,
+                                    //                 ),
+                                    //                 curve: Curves.easeInOut,
+                                    //               );
+                                    //             } else {
+                                    //               print("Item Received");
+                                    //             }
+                                    //     },
+                                    //     child: Text(
+                                    //       item.paymentMethod == "cash_on_delivery"
+                                    //           ? "Pay"
+                                    //           : "Done",
+                                    //       style: TextStyle(
+                                    //         fontSize: 14,
+                                    //         fontWeight: FontWeight.w500,
+                                    //         color: Colors.white,
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
                             ],
                           ),
                         ],
@@ -199,65 +241,38 @@ class OrderSummaryOneStore extends StatelessWidget {
 
             // ✅ Bottom Summary
             Container(
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 10.r,
-                    offset: const Offset(0, -2),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  _summaryRow(
-                    "Subtotal",
-                    "₹${controller.subtotal.toStringAsFixed(2)}",
-                  ),
-                  _summaryRow("Shipping", "Free"),
-                  _summaryRow("Tax", "₹${controller.tax.toStringAsFixed(2)}"),
-                  Divider(),
-                  _summaryRow(
-                    "Total",
-                    "₹${controller.total.toStringAsFixed(2)}",
-                    isBold: true,
-                  ),
-                ],
+                    margin: EdgeInsets.only(bottom: 13.h),
+                    width: Get.width * 0.6,
+                    height: Get.height * 0.064,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepOrange,
+                      ),
+                      onPressed: () {
+                        Get.to(
+                          () => PaymentPageView(),
+                          arguments: {
+                            "subtotal": "${controller.subtotal}",
+                            "tax": controller.tax.toStringAsFixed(2),
+                            "total": "${controller.total}",
+                            "storeName": storeName,
+                            "storeId": controller.storeId,
+                            "productQuantity": "${controller.productQuantity}",
+                          },
+                          transition: Transition.rightToLeft,
+                          duration: Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                      child: Text(
+                        "Proceed",
+                        style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      ),
               ),
             ),
           ],
         );
       }),
-    );
-  }
-
-  Widget _summaryRow(String title, String value, {bool isBold = false}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 6.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
-              color: isBold ? Colors.black : Colors.grey[700],
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
-              color: isBold ? Colors.black : Colors.grey[800],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

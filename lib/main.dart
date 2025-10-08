@@ -42,12 +42,12 @@ void main() async {
   Get.lazyPut(() => OnboardingController());
   Get.lazyPut(() => EndOfDayController());
   Get.lazyPut(() => DayCompleteController());
-  Get.lazyPut(() => PaymentPageController());
+  Get.lazyPut(() => PaymentPageController(), fenix: true);
   Get.lazyPut(() => AgentDashboardController());
   Get.lazyPut(() => DeliveryAgentProfileController());
   Get.lazyPut(() => MapInterationController());
   Get.lazyPut(() => DrawerBarController());
-  Get.lazyPut(() => PaymentPageController());
+
 
   // FlutterEngineGroup().useImpeller = false;
   // Get.put(ApiProvider());

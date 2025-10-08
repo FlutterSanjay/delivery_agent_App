@@ -1,129 +1,206 @@
-import 'package:delivery_agent/app/AppColor/appColor.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:delivery_agent/app/Services/GetStorageService/getStorageService.dart';
+import 'package:delivery_agent/app/Services/storeAssign/storeService.dart';
+import 'package:delivery_agent/app/modules/payment_page/Repository/payment_services.dart';
+import 'package:delivery_agent/app/modules/payment_page/views/payment_success_dialog.dart';
 import 'package:get/get.dart';
-
-import '../../../Services/payment_api_service.dart';
-import '../../../data/model/payment_transaction_model.dart';
-
-enum PaymentMethod {
-  cash,
-  card,
-  upi, // Unified Payments Interface (common in India)
-  other,
-}
-
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class PaymentPageController extends GetxController {
-  //TODO: Implement PaymentPageController
-  final PaymentApiService _apiService = PaymentApiService();
+  var upiLink = ''.obs;
+  var orderId = ''.obs;
+  var paid = false.obs;
+  var loading = false.obs;
 
-  // Observable for the current payment transaction state
-  final Rx<PaymentTransaction> transaction = PaymentTransaction(
-    amountDue: 0.0, // This should be set when navigating to the screen
-    paymentMethod: PaymentMethod.cash.name, // Default to cash
-  ).obs;
+  final PaymentServices _paymentService = PaymentServices();
+  final StoreService _storeService = StoreService();
+  Timer? _pollTimer;
 
+  final storage = StorageService();
 
-var selectedTab = "upi".obs;
+  final args = Get.arguments;
 
-  void changeTab(String tab) {
-    selectedTab.value = tab;
+  String get subtotal => args["subtotal"]?.toString() ?? "0.0";
+  String get tax => args["tax"] ?? "0.0";
+  String get total => args["total"]?.toString() ?? "0.0";
+  String get storeName => args["storeName"]?.toString() ?? "Demo Store";
+  String get storeId => args["storeId"]?.toString() ?? "Unkown Id";
+  String get productQuantity => args["productQuantity"]?.toString() ?? "1";
+
+  // Generate the Invoice
+  // file: invoice_generator.dart
+
+  var items = [
+    {"name": "Wireless Mouse", "qty": 1, "price": 499.0},
+    {"name": "Laptop Bag", "qty": 1, "price": 899.0},
+  ].obs;
+
+  /// 👉 Function to generate and save PDF
+  Future<File> generateInvoice() async {
+    final pdf = pw.Document();
+
+    // Total calculate
+    double total = items.fold(
+      0,
+      (sum, item) => sum + (item['price'] as double) * (item['qty'] as int),
+    );
+
+    pdf.addPage(
+      pw.Page(
+        build: (context) => pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            pw.Text(
+              "Sales Yatra Pvt. Ltd.",
+              style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
+            ),
+            pw.Text("2nd Floor, Tech Park, Bangalore\nPhone: +91 98765 43210"),
+            pw.SizedBox(height: 20),
+            pw.Text(
+              "Invoice: ${orderId.value}",
+              style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold),
+            ),
+            pw.Text("Customer: $storeName"),
+            pw.SizedBox(height: 20),
+            pw.TableHelper.fromTextArray(
+              headers: ["Item", "Qty", "Price", "Total"],
+              data: items.map((e) {
+                double itemTotal = (e['qty'] as int) * (e['price'] as double);
+                return [
+                  e['name'].toString(),
+                  e['qty'].toString(),
+                  "Rs.${e['price']}",
+                  "Rs.${itemTotal.toStringAsFixed(2)}",
+                ];
+              }).toList(),
+            ),
+            pw.SizedBox(height: 20),
+            pw.Align(
+              alignment: pw.Alignment.centerRight,
+              child: pw.Text(
+                "Grand Total: Rs${total.toStringAsFixed(2)}",
+                style: pw.TextStyle(
+                  fontSize: 16,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+            ),
+            pw.SizedBox(height: 40),
+            pw.Text(
+              "Thank you for shopping with us!",
+              style: pw.TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    // Save file to local directory
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File("${dir.path}/invoice_${orderId.value}.pdf");
+    await file.writeAsBytes(await pdf.save());
+
+    return file;
   }
-  
-  // Rx variable for cash input field
-  final TextEditingController cashInputController = TextEditingController();
-  final RxDouble changeDue = 0.0.obs;
 
-  // UI state variables
-  final RxBool isLoading = false.obs;
-  final RxString errorMessage = ''.obs;
+  Future<void> createAndSendInvoice() async {
+    final file = await generateInvoice();
 
-  @override
-  void onInit() {
-    super.onInit();
-    // Get the amount due from arguments passed during navigation
-    if (Get.arguments != null &&
-        Get.arguments is Map &&
-        Get.arguments['amount'] != null) {
-      final double amount = (Get.arguments['amount'] as num).toDouble();
-      transaction.value = transaction.value.copyWith(amountDue: amount);
+    await _paymentService.sendInvoiceToBackend(
+      file,
+      '${storage.getStoreEmail()}',
+    );
+  }
+
+  void checkStatus() async {
+    if (orderId.value.isEmpty) return;
+    print("Order Id:${orderId.value}");
+    try {
+      final response = await _paymentService.getPaymentStatus(orderId.value);
+      print("CheckStatus:${response}");
+      if (response['paid'] == true && !paid.value) {
+        paid.value = true;
+        await storage.savePaid(true);
+        _pollTimer?.cancel();
+
+        print("Get Order Id :${storage.getOrderId()}");
+
+        // Update order status in backend
+        await _storeService.updateOrderStatus(
+          orderId: "${storage.getOrderId()}",
+          status: "delivered",
+        );
+        Get.dialog(
+          PaymentSuccessDialog(
+            transactionId: response['id'],
+            amount: total,
+            controller: PaymentPageController(),
+          ),
+          barrierDismissible: false, // dialog tap karke band na ho
+        );
+      } else {
+        print(response);
+      }
+    } catch (e) {
+      print('Error polling status: $e');
     }
+  }
 
-    // Listener for cash input changes
-    cashInputController.addListener(_calculateChange);
+  void createPayment({
+    required double
+    amount, // amount in rupees as double from double.parse(total)
+    required String storeName,
+  }) async {
+    loading.value = true;
+    upiLink.value = '';
+    orderId.value = '';
+    paid.value = false;
+
+    try {
+      final response = await _paymentService.createPayment(
+        amount: (amount * 100).round(), // Convert rupees to paise
+        storeName: storeName,
+      );
+
+      upiLink.value = response['url'];
+      orderId.value = response['sessionId'];
+
+      // Start polling
+      _pollTimer?.cancel();
+      _pollTimer = Timer.periodic(Duration(seconds: 3), (_) => checkStatus());
+    } catch (e) {
+      Get.snackbar('Error', e.toString());
+    } finally {
+      loading.value = false;
+    }
   }
 
   @override
   void onClose() {
-    cashInputController.dispose();
+    _pollTimer?.cancel();
     super.onClose();
   }
 
-  // Updates the selected payment method
-  void selectPaymentMethod(PaymentMethod method) {
-    transaction.value = transaction.value.copyWith(paymentMethod: method.name);
-    // Clear cash input and change if method changes from cash
-    if (method != PaymentMethod.cash) {
-      cashInputController.clear();
-      changeDue.value = 0.0;
-      transaction.value = transaction.value.copyWith(cashPaid: null, changeDue: null);
-    }
-  }
+  // UPI Payment Link (for QR)
+  late String upiPaymentLink;
 
-  // Calculates change when cash input changes
-  void _calculateChange() {
-    final double amountPaid = double.tryParse(cashInputController.text) ?? 0.0;
-    final double due = transaction.value.amountDue;
-    changeDue.value = amountPaid - due;
-    transaction.value = transaction.value.copyWith(
-      cashPaid: amountPaid,
-      changeDue: changeDue.value,
-    );
-  }
+  // UI state
+  final RxBool isLoading = false.obs;
 
-  // Processes the payment
-  Future<void> processPayment() async {
+  @override
+  void onInit() {
+    super.onInit();
     isLoading.value = true;
-    errorMessage.value = '';
-    transaction.value = transaction.value.copyWith(status: 'processing');
+    // String merchantUpi = "8013812268@ybl"; // demo UPI ID
+    // upiPaymentLink = "upi://pay?pa=$merchantUpi&pn=$storeName&am=$total&cu=INR";
+    createPayment(amount: double.parse(total), storeName: storeName);
+  }
 
-    // Basic validation for cash payment
-    if (transaction.value.paymentMethod == PaymentMethod.cash.name &&
-        changeDue.value < 0) {
-      errorMessage.value = 'Amount paid is less than amount due.';
-      transaction.value = transaction.value.copyWith(status: 'failed');
-      isLoading.value = false;
-      return;
-    }
-
-    try {
-      // Simulate API call using the service
-      final PaymentTransaction result = await _apiService.processPayment(
-        transaction.value,
-      );
-
-      transaction.value = result; // Update transaction with backend response
-      Get.snackbar(
-        'Payment Successful!',
-        'Transaction ID: ${result.id ?? 'N/A'}',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: AppColor.greenColor,
-        colorText: AppColor.onPrimary,
-      );
-      // Optional: Navigate to a success screen or clear inputs
-      // Get.back(); // Pop payment screen
-    } catch (e) {
-      errorMessage.value = e.toString().replaceFirst('Exception: ', '');
-      transaction.value = transaction.value.copyWith(status: 'failed');
-      Get.snackbar(
-        'Payment Failed',
-        errorMessage.value,
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: AppColor.redColor,
-        colorText: AppColor.onPrimary,
-      );
-    } finally {
-      isLoading.value = false;
-    }
+  @override
+  void onReady() {
+    super.onReady();
+    isLoading.value = false;
   }
 }

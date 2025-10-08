@@ -18,7 +18,8 @@ class StoreList {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        print(data['name']);
+        print("First Screen Store List:$data");
+        await storage.saveAgentData({"AgentData": data});
         await storage.saveUserName(data['name']);
 
         return data;
@@ -42,7 +43,6 @@ class StoreList {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        print(data['agent']['vehicleId']);
 
         return data;
       } else {

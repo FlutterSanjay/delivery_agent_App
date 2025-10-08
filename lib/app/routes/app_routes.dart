@@ -20,6 +20,7 @@ abstract class Routes {
   static const PAGE_NOT_FOUND = _Paths.PAGE_NOT_FOUND;
   static const MAP_INTERATION = _Paths.MAP_INTERATION;
   static const DRAWER = _Paths.DRAWER;
+  static const HELP_SUPPORT = _Paths.HELP_SUPPORT;
 }
 
 abstract class _Paths {
@@ -41,4 +42,5 @@ abstract class _Paths {
   static const PAGE_NOT_FOUND = '/page-not-found';
   static const MAP_INTERATION = '/map-interation';
   static const DRAWER = '/drawer';
+  static const HELP_SUPPORT = '/help-support';
 }

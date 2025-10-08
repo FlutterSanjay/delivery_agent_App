@@ -57,6 +57,13 @@ dependencies:
   convex_bottom_bar: ^3.2.0
   cached_network_image: ^3.4.1
   flutter_cache_manager: ^3.4.1
+  qr_flutter:
+  open_filex:  
+  pdf: ^3.11.3
+  mailer: ^6.5.0
+ 
+
+
 
 
 

@@ -2,7 +2,6 @@ import 'package:delivery_agent/app/Services/GetStorageService/getStorageService.
 import 'package:delivery_agent/app/Services/storeList/storeList.dart';
 import 'package:get/get.dart';
 
-
 import '../../store_assign/views/store_assign_view.dart';
 
 class StoreListController extends GetxController {
@@ -38,6 +37,8 @@ class StoreListController extends GetxController {
 
         if (deliveryAgentData['message'] != "User Not Found") {
           totalSalePrice.value = '80';
+
+          print(deliveryAgentData['agent']['status']);
           final vehicleData = deliveryAgentData['vehicle'];
           final deliveryProfile = deliveryAgentData['profile'];
           licensePlate.value = vehicleData['licensePlate'];
@@ -45,7 +46,13 @@ class StoreListController extends GetxController {
               "${vehicleData['route']['street']} ${vehicleData['route']['city']}" ??
               'unknown';
 
+          storage.saveVehicleId("${vehicleData['licensePlate']}");
+
+          storage.saveAgentTown("${vehicleData['route']['city']}");
+
           totalStoreAssign.value = "${deliveryProfile['totalDeliveries']}";
+
+          storage.saveTotalDelivery("${deliveryProfile['totalDeliveries']}");
 
           isLoading.value = false;
         } else {

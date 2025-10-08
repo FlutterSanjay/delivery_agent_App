@@ -1,3 +1,4 @@
+import 'package:delivery_agent/app/Features/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import ScreenUtil
 
@@ -30,155 +31,164 @@ class DeliveryAgentProfileView extends GetView<DeliveryAgentProfileController> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.r),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// Profile Card
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16.r),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 2,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 40.r,
-                    backgroundImage: NetworkImage(
-                      "https://lh3.googleusercontent.com/aida-public/AB6AXuAc1Q5dnxQ9bslcZOr1nrE-VG_lw_2MJEMqGjP18a3ucf0L92_G5PizzcFG65yzRleeyA8TSDDXtmQLbYkNHTIev-6L8cerIz82RGg0Ui-80MH8LAC4dVWIFeRupladwYS4D9Q4i7xu1X_UJeRtrxcL0U2ianVyvxF7ua9pVT0GwNW-3DwhjbtxtxjNNXR4znCkrEevL5sezGp2lw7N5UB-M3aThb-bp-gPu8BXg5GEbQ7D3CR70XfNr_R65drC1F-XrtO1ff2eGC76",
-                    ),
-                  ),
-                  SizedBox(width: 16.w),
-                  Expanded(
-                    child: Obx(
-                      () => Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+      body: Obx(
+        () => controller.isLoading.value
+            ? AppLoader()
+            : SingleChildScrollView(
+                padding: EdgeInsets.all(16.r),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Profile Card
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 2,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: Row(
                         children: [
-                          Text(
-                            "Ethan Carter",
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold,
+                          CircleAvatar(
+                            radius: 40.r,
+                            backgroundImage: NetworkImage(
+                              "https://lh3.googleusercontent.com/aida-public/AB6AXuAc1Q5dnxQ9bslcZOr1nrE-VG_lw_2MJEMqGjP18a3ucf0L92_G5PizzcFG65yzRleeyA8TSDDXtmQLbYkNHTIev-6L8cerIz82RGg0Ui-80MH8LAC4dVWIFeRupladwYS4D9Q4i7xu1X_UJeRtrxcL0U2ianVyvxF7ua9pVT0GwNW-3DwhjbtxtxjNNXR4znCkrEevL5sezGp2lw7N5UB-M3aThb-bp-gPu8BXg5GEbQ7D3CR70XfNr_R65drC1F-XrtO1ff2eGC76",
                             ),
                           ),
-                          SizedBox(height: 4.h),
-                          Text(
-                            "Agent ID: 12345",
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 12.sp,
+                          SizedBox(width: 16.w),
+                          Expanded(
+                            child: Obx(
+                              () => Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    controller.name.value,
+                                    style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    "Agent ID: 12345",
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        controller.isActive.value
+                                            ? "Active"
+                                            : "Inactive",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: controller.isActive.value
+                                              ? Colors.green
+                                              : Colors.red,
+                                          fontSize: 12.sp,
+                                        ),
+                                      ),
+                                      Switch(
+                                        activeThumbColor:
+                                            controller.isActive.value
+                                            ? Colors.green
+                                            : Colors.red,
+                                        value: controller.isActive.value,
+                                        onChanged: (_) =>
+                                            controller.toggleStatus(),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 8.h),
-                          Row(
-                            children: [
-                              Text(
-                                controller.isActive.value
-                                    ? "Active"
-                                    : "Inactive",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: controller.isActive.value
-                                      ? Colors.green
-                                      : Colors.red,
-                                  fontSize: 12.sp,
-                                ),
-                              ),
-                              Switch(
-                                activeThumbColor: controller.isActive.value
-                                    ? Colors.green
-                                    : Colors.red,
-                                value: controller.isActive.value,
-                                onChanged: (_) => controller.toggleStatus(),
-                              ),
-                            ],
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20.h),
+                    SizedBox(height: 20.h),
 
-            /// Stats Section
-            GridView.count(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              childAspectRatio: 1.6,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              children: [
-                _buildStatCard(
-                  "Total Deliveries",
-                  Icons.inventory_2,
-                  controller.totalDeliveries,
+                    /// Stats Section
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.6,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                      children: [
+                        _buildStatCard(
+                          "Total Deliveries",
+                          Icons.inventory_2,
+                          controller.totalDeliveries,
+                        ),
+                        _buildStatCard(
+                          "Pending Deliveries",
+                          Icons.schedule,
+                          controller.pendingDeliveries,
+                          highlight: true,
+                        ),
+                        _buildStatCard(
+                          "Earnings",
+                          Icons.account_balance_wallet,
+                          controller.earnings,
+                          prefix: "₹",
+                        ),
+                        _buildStatCard("Rating", Icons.star, controller.rating),
+                      ],
+                    ),
+
+                    SizedBox(height: 20.h),
+
+                    /// Contact Details
+                    _buildInfoTile(Icons.phone, controller.phone, "Phone"),
+                    _buildInfoTile(Icons.mail, controller.email, "Email"),
+                    _buildInfoTile(
+                      Icons.two_wheeler,
+                      controller.vehicle,
+                      "Vehicle Assigned",
+                    ),
+                    _buildInfoTile(
+                      Icons.pin_drop,
+                      controller.zone,
+                      "Working Area/Zone",
+                    ),
+
+                    SizedBox(height: 20.h),
+
+                    /// Quick Actions
+                    Text(
+                      "Quick Actions",
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      childAspectRatio: 1,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                      children: [
+                        _buildActionButton(Icons.list_alt, "View Orders"),
+
+                        _buildActionButton(Icons.report, "Report Issue"),
+                      ],
+                    ),
+                  ],
                 ),
-                _buildStatCard(
-                  "Pending Deliveries",
-                  Icons.schedule,
-                  controller.pendingDeliveries,
-                  highlight: true,
-                ),
-                _buildStatCard(
-                  "Earnings",
-                  Icons.account_balance_wallet,
-                  controller.earnings,
-                  prefix: "₹",
-                ),
-                _buildStatCard("Rating", Icons.star, controller.rating),
-              ],
-            ),
-
-            SizedBox(height: 20.h),
-
-            /// Contact Details
-            _buildInfoTile(Icons.phone, controller.phone, "Phone"),
-            _buildInfoTile(Icons.mail, controller.email, "Email"),
-            _buildInfoTile(
-              Icons.two_wheeler,
-              controller.vehicle,
-              "Vehicle Assigned",
-            ),
-            _buildInfoTile(
-              Icons.pin_drop,
-              controller.zone,
-              "Working Area/Zone",
-            ),
-
-            SizedBox(height: 20.h),
-
-            /// Quick Actions
-            Text(
-              "Quick Actions",
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 12.h),
-            GridView.count(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              childAspectRatio: 1,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              children: [
-                _buildActionButton(Icons.list_alt, "View Orders"),
-
-                _buildActionButton(Icons.report, "Report Issue"),
-              ],
-            ),
-          ],
         ),
       ),
 

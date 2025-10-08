@@ -90,25 +90,8 @@ class DrawerBarView extends GetView<DrawerBarController> {
 
             // Footer
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-              child: Column(
-                children: [
-                  // Dark Mode Toggle
-                  Obx(
-                    () => SwitchListTile(
-                      title: const Text("Dark Mode"),
-                      activeThumbColor: const Color(0xFFFF6A00),
-                      value: controller.darkMode.value,
-                      onChanged: (val) {
-                        controller.darkMode.value = val;
-                        Get.changeThemeMode(
-                          val ? ThemeMode.dark : ThemeMode.light,
-                        );
-                      },
-                    ),
-                  ),
-                  // Logout Button
-                  ListTile(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 25.h),
+              child: ListTile(
                     leading: Icon(Icons.logout, color: Colors.red, size: 20.sp),
                     title: Text(
                       "Logout",
@@ -120,14 +103,13 @@ class DrawerBarView extends GetView<DrawerBarController> {
                     ),
                     onTap: () {
                       controller.logoutUser();
-                    },
-                  ),
-                ],
+                },
               ),
             ),
+         
           ],
         ),
-      ),
+      )
     );
   }
 

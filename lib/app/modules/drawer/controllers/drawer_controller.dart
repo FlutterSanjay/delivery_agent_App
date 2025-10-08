@@ -24,7 +24,7 @@ class DrawerBarController extends GetxController {
     "Reports": "/reports",
     "Notifications": "/notifications",
     "Settings": "/settings",
-    "Help & Support": "/help",
+    "Help & Support": Routes.HELP_SUPPORT,
   };
 
   void selectMenu(String menu) {

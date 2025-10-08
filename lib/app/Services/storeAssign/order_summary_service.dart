@@ -7,7 +7,7 @@ class OrderSummaryService {
   static final String baseUrl = UrlPath.MAIN_URL;
 
   Future<List<Order>> getOrderItems(String orderId) async {
-    final url = Uri.parse("$baseUrl/store/orders/$orderId");
+    final url = Uri.parse("${baseUrl}store/orders/$orderId");
 
     try {
       final response = await http.get(url);
