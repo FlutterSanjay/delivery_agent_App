@@ -1,51 +1,23 @@
-# delivery_agent
- /// Simulate payment completion
+<h1 align="center">🚧 Project Under Development 🚧</h1>
 
- 
-  Future<void> completePayment(BuildContext context) async {
-    isLoading.value = true;
+<p align="center">
+  <img src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif" width="150" />
+</p>
 
-    // fake transaction id (random banaya practice ke liye)
-    String txnId = DateTime.now().millisecondsSinceEpoch.toString();
-    print("Transaction Id:$txnId");
+<p align="center">
+  <b>⚙️ Node.js Backend + Flutter Frontend Integration</b><br/>
+  Smart Automated Order & Payment Management System (Work in Progress)
+</p>
 
-    // // Payment data
-    // Map<String, dynamic> paymentData = {
-    //   "transactionId": txnId,
-    //   "agentId": storage.getAgentId(),
-    //   "storeId": storeId,
-    //   "amount": total,
-    //   "storeName": storeName,
-    //   "productQuantity": productQuantity,
-    //   "status": "success",
-    // };
+---
 
-    try {
-      //   // REST API call (replace with your backend URL)
-      //   var response = await http.post(
-      //     Uri.parse("https://your-backend.com/api/payments"),
-      //     headers: {"Content-Type": "application/json"},
-      //     body: jsonEncode(paymentData),
-      //   );
+### 🌀 Current Status: <img src="https://progress-bar.dev/65/?title=Development%20Progress&color=blue" />
 
-      isLoading.value = false;
+<p align="center">
+  <img src="https://img.shields.io/badge/status-in_progress-yellow?style=for-the-badge&logo=github" />
+  <img src="https://img.shields.io/badge/backend-node.js-green?style=for-the-badge&logo=node.js" />
+  <img src="https://img.shields.io/badge/frontend-flutter-blue?style=for-the-badge&logo=flutter" />
+  <img src="https://img.shields.io/badge/database-firestore-orange?style=for-the-badge&logo=firebase" />
+</p>
 
-      // if (response.statusCode == 200) {
-      // Show success dialog
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) =>
-            PaymentSuccessDialog(transactionId: txnId, amount: total),
-      ).then((_) {
-        // Redirect to success page after closing dialog
-        Get.off(() => StoreAssignView());
-      });
-      // } else {
-      // Get.snackbar("Error", "Failed to store payment in backend");
-      // }
-    } catch (e) {
-      isLoading.value = false;
-      Get.snackbar("Error", "Something went wrong: $e");
-    }
-  }
+---
