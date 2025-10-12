@@ -236,7 +236,7 @@ class StoreAssignView extends GetView<StoreAssignController> {
                               elevation: 0,
                               side: BorderSide(color: AppColor.h5Color),
                             ),
-                            onPressed: () => controller.selectedItem(index),
+                            onPressed: () => controller.selectItem(index),
                             child: CommonText(
                               txtName: controller.statusItem[index],
                               txtColor: controller.selectedItem.value == index
@@ -252,213 +252,528 @@ class StoreAssignView extends GetView<StoreAssignController> {
 
                     // Store List
                     Expanded(
-                      child: ListView.separated(
-                        padding: EdgeInsets.symmetric(horizontal: 2.w),
-                        itemCount: controller.stores.length,
-                        separatorBuilder: (_, __) => SizedBox(height: 13.h),
-                        itemBuilder: (context, index) {
-                          final store = controller.stores[index];
-                          // final order = controller.getOrdersByStoreId(store['data']['storeId']);
-                          final storeDetail = store['data'];
+                      child: Obx(() {
+                        if (controller.filterLoading.value) {
+                          return AppLoader();
+                        } else if (controller.selectedItem.value == 1) {
+                          return ListView.separated(
+                            padding: EdgeInsets.symmetric(horizontal: 2.w),
+                            itemCount: controller.stores.length,
+                            separatorBuilder: (_, __) => SizedBox(height: 13.h),
+                            itemBuilder: (context, index) {
+                              final store = controller.stores[index];
+                              final storeDetail = store['data'];
 
-                          final storeLatitude =
-                              storeDetail['location']?['latitude'] ?? 0.0;
-                          final storeLongitude =
-                              storeDetail['location']?['longitude'] ?? 0.0;
+                              final storeLatitude =
+                                  storeDetail['location']?['latitude'] ?? 0.0;
+                              final storeLongitude =
+                                  storeDetail['location']?['longitude'] ?? 0.0;
 
-                          // print("Store Details : $store");
-                          return GestureDetector(
-                            onTap: () {
-                              final orderItem = storeDetail['orderedItems'][0];
-                              print(storeDetail['email']);
-                              controller.storage.saveStoreEmail(
-                                storeDetail['email'],
-                              );
-                              controller.storage.saveOrderId(orderItem);
+                              return GestureDetector(
+                                onTap: () {
+                                  final orderItem =
+                                      storeDetail['orderedItems'][0];
+                                  print(storeDetail['email']);
+                                  controller.storage.saveStoreEmail(
+                                    storeDetail['email'],
+                                  );
+                                  controller.storage.saveOrderId(orderItem);
+                                  controller.fetchOrderItems(orderItem);
 
-                              controller.fetchOrderItems(orderItem);
+                                  Get.to(
+                                    () => OrderSummaryOneStore(
+                                      controller: controller,
+                                      storeName: storeDetail['storeName'],
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 200.h,
+                                  decoration: BoxDecoration(
+                                    color: AppColor.onPrimary,
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withAlpha(40),
+                                        spreadRadius: 2.r,
+                                        blurRadius: 2.r,
+                                        offset: Offset(0.w, 3.h),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      // Store Image
+                                      Container(
+                                        width: Get.width * 0.36,
+                                        height: 200.h,
+                                        margin: EdgeInsets.all(8.w),
+                                        decoration: BoxDecoration(
+                                          color: AppColor.onPrimary,
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                              ImagePath.storeImg,
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
 
-                              Get.to(
-                                () => OrderSummaryOneStore(
-                                  controller: controller,
-                                  storeName: storeDetail['storeName'],
+                                      // Store Details
+                                      Padding(
+                                        padding: EdgeInsets.only(bottom: 20.h),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                CommonText(
+                                                  txtName:
+                                                      "${storeDetail['storeName']}",
+                                                  txtColor:
+                                                      AppColor.onSecondary,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 18.sp,
+                                                ),
+                                              ],
+                                            ),
+                                            // Store Tags
+                                            Row(
+                                              children: [
+                                                TagFeature(
+                                                  txtName:
+                                                      "${storeDetail['storeType']}",
+                                                  txtColor: AppColor.primary,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 12.sp,
+                                                  borderColor: AppColor.primary,
+                                                ),
+                                                SizedBox(width: 5.w),
+                                                TagFeature(
+                                                  txtName: "Yet To Deliver",
+                                                  txtColor: AppColor.primary,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 13.sp,
+                                                  borderColor: AppColor.primary,
+                                                ),
+                                              ],
+                                            ),
+
+                                            // Store Stats
+                                            Column(
+                                              children: [
+                                                RichTextFeature(
+                                                  primaryText:
+                                                      "Last Billed Amount: ",
+                                                  secondaryText: "6200",
+                                                  primaryTextColor:
+                                                      AppColor.onSecondary,
+                                                  secondaryTextColor:
+                                                      AppColor.onSecondary,
+                                                  primaryFontSize: 10.sp,
+                                                  secondaryFontSize: 10.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                                SizedBox(height: 5.h),
+                                                RichTextFeature(
+                                                  primaryText:
+                                                      "Avg Billed Amount: ",
+                                                  secondaryText: "6200",
+                                                  primaryTextColor:
+                                                      AppColor.onSecondary,
+                                                  secondaryTextColor:
+                                                      AppColor.onSecondary,
+                                                  primaryFontSize: 10.sp,
+                                                  secondaryFontSize: 10.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ],
+                                            ),
+
+                                            // Action Buttons
+                                            Row(
+                                              spacing: 10.w,
+                                              children: [
+                                                // Delivery Button
+                                                Container(
+                                                  width: Get.width * 0.28,
+                                                  height: 33.h,
+                                                  decoration: BoxDecoration(
+                                                    color: AppColor
+                                                        .primaryVariant1,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          18.r,
+                                                        ),
+                                                  ),
+                                                  child: Center(
+                                                    child: CommonText(
+                                                      txtName: "Start Delivery",
+                                                      txtColor:
+                                                          AppColor.onPrimary,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 13.sp,
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                // Call Button
+                                                IconButton(
+                                                  onPressed: () {
+                                                    controller.makePhoneCall(
+                                                      storeDetail['phoneNumber']
+                                                          .toString(),
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.call,
+                                                    size: 26.sp,
+                                                    color: AppColor.greenColor,
+                                                  ),
+                                                ),
+
+                                                // Distance
+                                                IconButton(
+                                                  padding: EdgeInsets.zero,
+                                                  onPressed: () {
+                                                    Get.toNamed(
+                                                      '/map-interation',
+                                                      arguments: {
+                                                        "lat": storeLatitude,
+                                                        "lon": storeLongitude,
+                                                        "storeName":
+                                                            storeDetail['storeName'],
+                                                      },
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.location_on,
+                                                    size: 26.sp,
+                                                    color: AppColor.redColor,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
-                            child: Container(
-                              height: 200.h,
-                              decoration: BoxDecoration(
-                                color: AppColor.onPrimary,
-                                borderRadius: BorderRadius.circular(10.r),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withAlpha(40),
-                                    spreadRadius: 2.r,
-                                    blurRadius: 2.r,
-                                    offset: Offset(0.w, 3.h),
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                children: [
-                                  // Store Image
-                                  Container(
-                                    width: Get.width * 0.36,
-                                    height: 200.h,
-                                    margin: EdgeInsets.all(8.w),
-                                    decoration: BoxDecoration(
-                                      color: AppColor.onPrimary,
-                                      image: DecorationImage(
-                                        image: AssetImage(ImagePath.storeImg),
-                                        fit: BoxFit.cover,
+                          );
+                        } else if (controller.selectedItem.value == 0) {
+                          return ListView.separated(
+                            padding: EdgeInsets.symmetric(horizontal: 2.w),
+                            itemCount: controller.filteredStores.length,
+                            separatorBuilder: (_, __) => SizedBox(height: 13.h),
+                            itemBuilder: (context, index) {
+                              final store = controller.filteredStores[index];
+                              final storeDetail = store['data'];
+
+                              return Container(
+                                height: 200.h,
+                                decoration: BoxDecoration(
+                                  color: AppColor.onPrimary,
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withAlpha(40),
+                                      spreadRadius: 2.r,
+                                      blurRadius: 2.r,
+                                      offset: Offset(0.w, 3.h),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  children: [
+                                    // Store Image
+                                    Container(
+                                      width: Get.width * 0.36,
+                                      height: 200.h,
+                                      margin: EdgeInsets.all(8.w),
+                                      decoration: BoxDecoration(
+                                        color: AppColor.onPrimary,
+                                        image: DecorationImage(
+                                          image: AssetImage(ImagePath.storeImg),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
-                                  ),
 
-                                  // Store Details
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 20.h),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            CommonText(
-                                              txtName:
-                                                  "${storeDetail['storeName']}",
-                                              txtColor: AppColor.onSecondary,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 18.sp,
-                                            ),
-                                          ],
-                                        ),
-                                        // Store Tags
-                                        Row(
-                                          children: [
-                                            TagFeature(
-                                              txtName:
-                                                  "${storeDetail['storeType']}",
-                                              txtColor: AppColor.primary,
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12.sp,
-                                              borderColor: AppColor.primary,
-                                            ),
-                                            SizedBox(width: 5.w),
-                                            TagFeature(
-                                              txtName: "Yet To Deliver",
-                                              txtColor: AppColor.primary,
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 13.sp,
-                                              borderColor: AppColor.primary,
-                                            ),
-                                          ],
-                                        ),
-
-                                        // Store Stats
-                                        Column(
-                                          children: [
-                                            RichTextFeature(
-                                              primaryText:
-                                                  "Last Billed Amount: ",
-                                              secondaryText: "6200",
-                                              primaryTextColor:
-                                                  AppColor.onSecondary,
-                                              secondaryTextColor:
-                                                  AppColor.onSecondary,
-                                              primaryFontSize: 10.sp,
-                                              secondaryFontSize: 10.sp,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                            SizedBox(height: 5.h),
-                                            RichTextFeature(
-                                              primaryText:
-                                                  "Avg Billed Amount: ",
-                                              secondaryText: "6200",
-                                              primaryTextColor:
-                                                  AppColor.onSecondary,
-                                              secondaryTextColor:
-                                                  AppColor.onSecondary,
-                                              primaryFontSize: 10.sp,
-                                              secondaryFontSize: 10.sp,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ],
-                                        ),
-
-                                        // Action Buttons
-                                        Row(
-                                          spacing: 10.w,
-                                          children: [
-                                            // Delivery Button
-                                            Container(
-                                              width: Get.width * 0.28,
-                                              height: 33.h,
-                                              decoration: BoxDecoration(
-                                                color: AppColor.primaryVariant1,
-                                                borderRadius:
-                                                    BorderRadius.circular(18.r),
+                                    // Store Details
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 20.h),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              CommonText(
+                                                txtName:
+                                                    "${storeDetail['storeName']}",
+                                                txtColor: AppColor.onSecondary,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 18.sp,
                                               ),
-                                              child: Center(
-                                                child: CommonText(
-                                                  txtName: "Start Delivery",
-                                                  txtColor: AppColor.onPrimary,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 13.sp,
+                                            ],
+                                          ),
+                                          // Store Tags
+                                          Row(
+                                            children: [
+                                              TagFeature(
+                                                txtName:
+                                                    "${storeDetail['storeType']}",
+                                                txtColor: AppColor.primary,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 12.sp,
+                                                borderColor: AppColor.primary,
+                                              ),
+                                              SizedBox(width: 5.w),
+                                              TagFeature(
+                                                txtName: "Yet To Deliver",
+                                                txtColor: AppColor.primary,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 13.sp,
+                                                borderColor: AppColor.primary,
+                                              ),
+                                            ],
+                                          ),
+
+                                          // Store Stats
+                                          Column(
+                                            children: [
+                                              RichTextFeature(
+                                                primaryText:
+                                                    "Last Billed Amount: ",
+                                                secondaryText: "6200",
+                                                primaryTextColor:
+                                                    AppColor.onSecondary,
+                                                secondaryTextColor:
+                                                    AppColor.onSecondary,
+                                                primaryFontSize: 10.sp,
+                                                secondaryFontSize: 10.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              SizedBox(height: 5.h),
+                                              RichTextFeature(
+                                                primaryText:
+                                                    "Avg Billed Amount: ",
+                                                secondaryText: "6200",
+                                                primaryTextColor:
+                                                    AppColor.onSecondary,
+                                                secondaryTextColor:
+                                                    AppColor.onSecondary,
+                                                primaryFontSize: 10.sp,
+                                                secondaryFontSize: 10.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ],
+                                          ),
+
+                                          // Action Buttons
+                                          Row(
+                                            spacing: 10.w,
+                                            children: [
+                                              Container(
+                                                width: Get.width * 0.28,
+                                                height: 33.h,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      AppColor.primaryVariant1,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                        18.r,
+                                                      ),
+                                                ),
+                                                child: Center(
+                                                  child: CommonText(
+                                                    txtName: "Start Delivery",
+                                                    txtColor:
+                                                        AppColor.onPrimary,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 13.sp,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-
-                                            // Call Button
-                                            IconButton(
-                                              onPressed: () {
-                                                controller.makePhoneCall(
-                                                  storeDetail['phoneNumber']
-                                                      .toString(),
-                                                );
-                                              },
-                                              icon: Icon(
-                                                Icons.call,
-                                                size: 26.sp,
-                                                color: AppColor.greenColor,
-                                              ),
-                                            ),
-
-                                            // Distance
-                                            IconButton(
-                                              padding: EdgeInsets.zero,
-                                              onPressed: () {
-                                                Get.toNamed(
-                                                  '/map-interation',
-                                                  arguments: {
-                                                    "lat": storeLatitude,
-                                                    "lon": storeLongitude,
-                                                    "storeName":
-                                                        storeDetail['storeName'],
-                                                    // "orderDetail": order,
-                                                  },
-                                                );
-                                              },
-                                              icon: Icon(
-                                                Icons.location_on,
-                                                size: 26.sp,
-                                                color: AppColor.redColor,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        } else if (controller.selectedItem.value == 2) {
+                          return ListView.separated(
+                            padding: EdgeInsets.symmetric(horizontal: 2.w),
+                            itemCount: controller.filteredStores.length,
+                            separatorBuilder: (_, __) => SizedBox(height: 13.h),
+                            itemBuilder: (context, index) {
+                              final store = controller.filteredStores[index];
+                              final storeDetail = store['data'];
+
+                              return Container(
+                                height: 200.h,
+                                decoration: BoxDecoration(
+                                  color: AppColor.onPrimary,
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withAlpha(40),
+                                      spreadRadius: 2.r,
+                                      blurRadius: 2.r,
+                                      offset: Offset(0.w, 3.h),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  children: [
+                                    // Store Image
+                                    Container(
+                                      width: Get.width * 0.36,
+                                      height: 200.h,
+                                      margin: EdgeInsets.all(8.w),
+                                      decoration: BoxDecoration(
+                                        color: AppColor.onPrimary,
+                                        image: DecorationImage(
+                                          image: AssetImage(ImagePath.storeImg),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+
+                                    // Store Details
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 20.h),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              CommonText(
+                                                txtName:
+                                                    "${storeDetail['storeName']}",
+                                                txtColor: AppColor.onSecondary,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 18.sp,
+                                              ),
+                                            ],
+                                          ),
+                                          // Store Tags
+                                          Row(
+                                            children: [
+                                              TagFeature(
+                                                txtName:
+                                                    "${storeDetail['storeType']}",
+                                                txtColor: AppColor.primary,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 12.sp,
+                                                borderColor: AppColor.primary,
+                                              ),
+                                              SizedBox(width: 5.w),
+                                              TagFeature(
+                                                txtName: "Yet To Deliver",
+                                                txtColor: AppColor.primary,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 13.sp,
+                                                borderColor: AppColor.primary,
+                                              ),
+                                            ],
+                                          ),
+
+                                          // Store Stats
+                                          Column(
+                                            children: [
+                                              RichTextFeature(
+                                                primaryText:
+                                                    "Last Billed Amount: ",
+                                                secondaryText: "6200",
+                                                primaryTextColor:
+                                                    AppColor.onSecondary,
+                                                secondaryTextColor:
+                                                    AppColor.onSecondary,
+                                                primaryFontSize: 10.sp,
+                                                secondaryFontSize: 10.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              SizedBox(height: 5.h),
+                                              RichTextFeature(
+                                                primaryText:
+                                                    "Avg Billed Amount: ",
+                                                secondaryText: "6200",
+                                                primaryTextColor:
+                                                    AppColor.onSecondary,
+                                                secondaryTextColor:
+                                                    AppColor.onSecondary,
+                                                primaryFontSize: 10.sp,
+                                                secondaryFontSize: 10.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ],
+                                          ),
+
+                                          // Action Buttons
+                                          Row(
+                                            spacing: 10.w,
+                                            children: [
+                                              Container(
+                                                width: Get.width * 0.28,
+                                                height: 33.h,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      AppColor.primaryVariant1,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                        18.r,
+                                                      ),
+                                                ),
+                                                child: Center(
+                                                  child: CommonText(
+                                                    txtName: "Start Delivery",
+                                                    txtColor:
+                                                        AppColor.onPrimary,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 13.sp,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          return Center(
+                            child: CommonText(
+                              txtName: "No Data Found",
+                              txtColor: AppColor.onSecondary,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16.sp,
                             ),
                           );
-                        },
-                      ),
-                    ),
+                        }
+                      }),
+                    )
+
                   ],
                 ),
               ),

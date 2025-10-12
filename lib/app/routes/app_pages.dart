@@ -28,6 +28,8 @@ import '../modules/payment_page/bindings/payment_page_binding.dart';
 import '../modules/payment_page/views/payment_page_view.dart';
 import '../modules/record_sales/bindings/record_sales_binding.dart';
 import '../modules/record_sales/views/record_sales_view.dart';
+import '../modules/report_page/bindings/report_page_binding.dart';
+import '../modules/report_page/views/report_page_view.dart';
 import '../modules/signUp_page/bindings/sign_up_page_binding.dart';
 import '../modules/signUp_page/views/sign_up_page_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
@@ -134,6 +136,11 @@ class AppPages {
       name: _Paths.HELP_SUPPORT,
       page: () => const HelpSupportView(),
       binding: HelpSupportBinding(),
+    ),
+    GetPage(
+      name: _Paths.REPORT_PAGE,
+      page: () => const ReportPageView(),
+      binding: ReportPageBinding(),
     ),
   ];
 }

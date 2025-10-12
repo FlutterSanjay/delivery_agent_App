@@ -6,6 +6,7 @@ import 'package:delivery_agent/app/modules/end_of_day/controllers/end_of_day_con
 import 'package:delivery_agent/app/modules/map_interation/controllers/map_interation_controller.dart';
 import 'package:delivery_agent/app/modules/order/controllers/order_controller.dart';
 import 'package:delivery_agent/app/modules/payment_page/controllers/payment_page_controller.dart';
+import 'package:delivery_agent/app/modules/report_page/controllers/report_page_controller.dart';
 import 'package:delivery_agent/app/modules/signUp_page/controllers/sign_up_page_controller.dart';
 import 'package:delivery_agent/app/modules/store_assign/controllers/store_assign_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,7 +48,7 @@ void main() async {
   Get.lazyPut(() => DeliveryAgentProfileController());
   Get.lazyPut(() => MapInterationController());
   Get.lazyPut(() => DrawerBarController());
-
+  Get.lazyPut(() => ReportPageController());
 
   // FlutterEngineGroup().useImpeller = false;
   // Get.put(ApiProvider());

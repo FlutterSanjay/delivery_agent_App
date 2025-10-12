@@ -21,6 +21,7 @@ abstract class Routes {
   static const MAP_INTERATION = _Paths.MAP_INTERATION;
   static const DRAWER = _Paths.DRAWER;
   static const HELP_SUPPORT = _Paths.HELP_SUPPORT;
+  static const REPORT_PAGE = _Paths.REPORT_PAGE;
 }
 
 abstract class _Paths {
@@ -43,4 +44,5 @@ abstract class _Paths {
   static const MAP_INTERATION = '/map-interation';
   static const DRAWER = '/drawer';
   static const HELP_SUPPORT = '/help-support';
+  static const REPORT_PAGE = '/report-page';
 }

@@ -21,7 +21,7 @@ class DrawerBarController extends GetxController {
   final Map<String, String> menuRoutes = {
     "Profile": Routes.DELIVERY_AGENT_PROFILE,
     "Orders": Routes.ORDER,
-    "Reports": "/reports",
+    "Reports": Routes.REPORT_PAGE,
     "Notifications": "/notifications",
     "Settings": "/settings",
     "Help & Support": Routes.HELP_SUPPORT,

@@ -61,6 +61,7 @@ dependencies:
   open_filex:  
   pdf: ^3.11.3
   mailer: ^6.5.0
+  fl_chart: ^1.1.1
  
 
 

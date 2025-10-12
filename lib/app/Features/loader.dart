@@ -1,4 +1,3 @@
-import 'package:delivery_agent/app/AppColor/appColor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_indicator/loading_indicator.dart';

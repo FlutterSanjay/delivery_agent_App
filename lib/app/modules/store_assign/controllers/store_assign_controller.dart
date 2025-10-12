@@ -46,6 +46,7 @@ class StoreAssignController extends GetxController {
   RxBool isSelect = true.obs;
   final count = 0.obs;
   var loading = false.obs;
+  var filterLoading = false.obs;
 
   var selectedIndex = 0.obs;
 
@@ -62,10 +63,27 @@ class StoreAssignController extends GetxController {
   /// Sirf stores
   var stores = <Map<String, dynamic>>[].obs;
 
-  var selectedItem = (-1).obs;
+  var filteredStores = <Map<String, dynamic>>[].obs;
+
+  var selectedItem = (1).obs;
 
   void selectItem(int index) {
-    selectedItem.value = index;
+    print("Index Selected: $index");
+    switch (index) {
+      case 0:
+        selectedItem.value = index;
+        filterOrderList("ready_for_delivery");
+        break;
+      case 1:
+        selectedItem.value = index;
+        _getAllStores();
+
+        break;
+      case 2:
+        selectedItem.value = index;
+        filterOrderList("delivered");
+        break;
+    }
   }
 
   void changePage(int index) {
@@ -75,16 +93,23 @@ class StoreAssignController extends GetxController {
   @override
   void onInit() {
     // fetchOrderItems();
+    loading.value = true;
     super.onInit();
     _getAllStores();
     final agentId = storage.getUserId() ?? " ";
     _startListening(agentId);
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+    loading.value = false;
+  }
+
   /// ✅ API call -> stores + orders fetch
   void _getAllStores() async {
     try {
-      loading.value = true;
+      filterLoading.value = true;
       combinedList.clear();
       // orders.clear();
       stores.clear();
@@ -117,7 +142,7 @@ class StoreAssignController extends GetxController {
     } catch (e) {
       Get.snackbar("Error", "Something Went Wrong: $e");
     } finally {
-      loading.value = false;
+      filterLoading.value = false;
     }
   }
 
@@ -233,5 +258,26 @@ class StoreAssignController extends GetxController {
     productLength.value = data[0].products!.length;
     items.assignAll(data); // ✅ ab Order list assign hoga
     loading.value = false;
+  }
+
+  void filterOrderList(String status) async {
+    try {
+      filterLoading.value = true;
+      filteredStores.clear();
+      Map<String, dynamic> filterData = await storeService.filterOrdersByStatus(
+        status: status,
+        vehicleId: '31ebd0f7-40c6-4e42-9117-bb8daa1e60e7',
+      );
+      for (var store in filterData['stores']) {
+        final formatted = {"type": "store", "data": store};
+        filteredStores.add(formatted);
+      }
+
+      print("✅ Stores Loaded: ${stores.length}");
+    } catch (e) {
+      Get.snackbar("Error", "Something Went Wrong: $e");
+    } finally {
+      filterLoading.value = false;
+    }
   }
 }
